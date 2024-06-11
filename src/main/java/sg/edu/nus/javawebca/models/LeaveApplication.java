@@ -9,7 +9,7 @@ public class LeaveApplication {
     private DateTimeFormatter start_date;
     private DateTimeFormatter end_date;
     private String reason;
-    private int status;//
+    private int status;//（1:applied、2:approved、3:rejected、4:cancel、5:updated、6:deleted）
     private DateTimeFormatter created_at;
     private DateTimeFormatter updated_at;
 }
