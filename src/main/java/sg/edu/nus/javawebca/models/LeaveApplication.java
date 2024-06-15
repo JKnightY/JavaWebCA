@@ -1,14 +1,21 @@
 package sg.edu.nus.javawebca.models;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "LeaveApplication")
 public class LeaveApplication {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private int employeeId;
     private char leaveType;//"A" = "annual_leave" "M" = "medical_leave" "C" = "compensation_leave"
     private LocalDateTime start_date;
     private LocalDateTime end_date;
     private String reason;
+    @Column(name = "status", nullable = false)
     private int status;//（1:applied、2:approved、3:rejected、4:cancel、5:updated、6:deleted）
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
