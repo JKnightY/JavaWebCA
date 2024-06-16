@@ -1,36 +1,70 @@
 package sg.edu.nus.javawebca.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import sg.edu.nus.javawebca.models.User;
 import sg.edu.nus.javawebca.services.AdminService;
-import java.util.List;
 import java.util.Optional;
+import jakarta.validation.Valid;
 
-@RestController
+
+@Controller
 @RequestMapping("Admin")
 public class AdminController {
     @Autowired
     private AdminService adminService;
 
     @GetMapping("/users")
-    public List<User> listUsers() {
-        return adminService.findAllUsers();
+    public String listUsers(Model model) {
+        model.addAttribute("users", adminService.findAllUsers());
+        return "user-list";
     }
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<User> getUser(@PathVariable int id) {
-        Optional<User> optuser = adminService.findUserById(id);
-        if (optuser.isPresent()) {
-            User user = optuser.get();
-            return new ResponseEntity<>(user, HttpStatus.OK);
+    public String getUser(@PathVariable int id, Model model) {
+        Optional<User> user = adminService.findUserById(id);
+        if (user.isPresent()) {
+            model.addAttribute("user", user.get());
+            return "user-details";
         }else{
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return "redirect:/";
         }
+    }
+
+    @RequestMapping("/users/create")
+    public String createUser(Model model) {
+        model.addAttribute("user", new User());
+        return "user-create";
+    }
+
+    @RequestMapping("/users/save")
+    public String saveUser(@ModelAttribute("user") @Valid User inuser , BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "user-create";
+        }
+        if (inuser.getId() == null) {
+            adminService.createUser(inuser);
+        } else {
+            adminService.updateUser(inuser);
+        }
+        return "redirect:/Admin/users";
+    }
+
+    @RequestMapping("/users/delete")
+    public String deleteUser(@RequestParam int id) {
+        adminService.deleteUser(id);
+        return "redirect:/users";
+    }
+
+    @RequestMapping("/users/update")
+    public String updateUser(@RequestParam int id, Model model) {
+        Optional<User> user = adminService.findUserById(id);
+        if (user.isPresent()) {
+            model.addAttribute("user", user.get());
+        }
+        return "user-update";
     }
 }

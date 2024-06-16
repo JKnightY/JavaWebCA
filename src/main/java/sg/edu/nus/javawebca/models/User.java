@@ -1,10 +1,15 @@
 package sg.edu.nus.javawebca.models;
 
+import jakarta.validation.constraints.NotNull;
+
 public class User {
-    private int id;
+    private Integer id;
+    @NotNull(message = "account must be provided")
     private String account;
     private String password;
+    @NotNull(message = "username must be provided")
     private String username;
+    @NotNull(message = "role type must be provided")
     private int role;//"0" = "admin" "1" = "staff" "2" = "manager"
     private String email;
     private int annual_leave_entitlement;
@@ -13,7 +18,7 @@ public class User {
 
     public User(){}
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
