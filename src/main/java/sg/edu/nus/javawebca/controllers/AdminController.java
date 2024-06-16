@@ -1,4 +1,4 @@
-package sg.edu.nus.javawebca.controller;
+package sg.edu.nus.javawebca.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import sg.edu.nus.javawebca.models.User;
-import sg.edu.nus.javawebca.service.AdminService;
+import sg.edu.nus.javawebca.services.AdminService;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,6 +33,4 @@ public class AdminController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
-
 }

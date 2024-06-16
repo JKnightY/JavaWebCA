@@ -1,11 +1,10 @@
-package sg.edu.nus.javawebca.service;
+package sg.edu.nus.javawebca.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sg.edu.nus.javawebca.models.Role;
 import sg.edu.nus.javawebca.models.User;
-import sg.edu.nus.javawebca.repository.AdminRepository;
+import sg.edu.nus.javawebca.repositories.AdminRepository;
 
 import java.util.List;
 import java.util.Optional;

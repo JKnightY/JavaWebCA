@@ -1,4 +1,4 @@
-package sg.edu.nus.javawebca.service;
+package sg.edu.nus.javawebca.services;
 
 import sg.edu.nus.javawebca.models.User;
 
