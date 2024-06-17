@@ -3,6 +3,7 @@ package sg.edu.nus.javawebca.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sg.edu.nus.javawebca.models.LeaveType;
 import sg.edu.nus.javawebca.models.User;
 import sg.edu.nus.javawebca.repositories.AdminRepository;
 
@@ -38,7 +39,9 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void deleteUser(int id){
-        adminRepository.deleteById(id);
+    @Transactional
+    public void deleteUser(User user){
+        adminRepository.delete(user);
     }
+
 }

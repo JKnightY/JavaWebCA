@@ -1,8 +1,17 @@
 package sg.edu.nus.javawebca.models;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
+import jakarta.persistence.Table;
 
+@Entity
+@Table(name = "users")
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @NotNull(message = "account must be provided")
     private String account;
@@ -10,7 +19,7 @@ public class User {
     @NotNull(message = "username must be provided")
     private String username;
     @NotNull(message = "role type must be provided")
-    private int role;//"0" = "admin" "1" = "staff" "2" = "manager"
+    private Integer role;//"0" = "admin" "1" = "staff" "2" = "manager"
     private String email;
     private int annual_leave_entitlement;
     private int medical_leave_entitlement;
@@ -22,7 +31,7 @@ public class User {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -50,11 +59,11 @@ public class User {
         this.username = username;
     }
 
-    public int getRole() {
+    public Integer getRole() {
         return role;
     }
 
-    public void setRole(int role) {
+    public void setRole(Integer role) {
         this.role = role;
     }
 

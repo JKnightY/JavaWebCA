@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Leave Entitlement</title>
+    <link rel="stylesheet" href="/css/user-create.css">
+</head>
+<body>
+<div class="container">
+    <div class="content">
+        <h2>Create Leave Entitlement Form</h2>
+        <form th:action="@{/Admin/leaveentitlements/save}" th:object="${leaveentitlement}" method="post">
+            <input type="hidden" th:field="*{id}">
+            <fieldset>
+                <label for="name">Leave Entitlement Name:</label>
+                <input type="text" id="name" th:field="*{name}">
+                <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Employee ID Error</p>
+            </fieldset>
+            <fieldset>
+                <label for="days">Days:</label>
+                <input type="text" id="days" th:field="*{days}">
+                <p th:if="${#fields.hasErrors('days')}" th:errors="*{days}">Days Error</p>
+            </fieldset>
+            <fieldset>
+                <input type="submit" value="Save" class="btn btn-primary"/>
+                &nbsp; &nbsp;
+                <input type="reset" value="Reset" class="btn btn-secondary"/>
+            </fieldset>
+        </form>
+    </div>
+</div>
+</body>
+</html>

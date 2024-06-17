@@ -1,43 +1,100 @@
+<!--
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Create User</title>
-    <link rel="stylesheet" href="/path/to/your/css/styles.css">
+    <link rel="stylesheet" href="/css/user-create.css">
 </head>
 <body>
-    <h2>Create User Form</h2>
-    <form action="#" th:object="${user}" th:action="@{/Admin/users/save}" method="post">
-            <input type="hidden" th:field="*{id}">
-        <fieldset>
-            <label for="account">Account:</label>
-            <input type="text" id="account" th:field="*{account}">
-        </fieldset>
-        <fieldset>
-            <label for="password">Password:</label>
-            <input type="password" id="password" th:field="*{password}">
-        </fieldset>
-        <fieldset>
-            <label for="username">Username:</label>
-            <input type="text" id="username" th:field="*{username}">
-        </fieldset>
-        <fieldset>
-            <label for="role">Role:</label>
-            <select id="role" th:field="*{role}">
-                <option value="" disabled selected>Select Role</option>
-                <option value="0">Admin</option>
-                <option value="1">Staff</option>
-                <option value="2">Manager</option>
-            </select>
-        </fieldset>
-        <fieldset>
-            <label for="email">Email:</label>
-            <input type="email" id="email" th:field="*{email}">
-        </fieldset>
-        <fieldset>
-            <input type="submit" value="Save"/>
-            &nbsp; &nbsp;
-            <input type="reset" value="Reset"/>
-        </fieldset>
-    </form>
+<h2>Create User Form</h2>
+<form action="#" th:object="${user}" th:action="@{/Admin/users/save}" method="post">
+    <input type="hidden" th:field="*{id}">
+    <fieldset>
+        <label for="account">Account:</label>
+        <input type="text" id="account" th:field="*{account}">
+        <p th:if="${#fields.hasErrors('account')}" th:errors="*{account}">Account Error</p>
+    </fieldset>
+    <fieldset>
+        <label for="password">Password:</label>
+        <input type="password" id="password" th:field="*{password}">
+        <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</p>
+    </fieldset>
+    <fieldset>
+        <label for="username">Username:</label>
+        <input type="text" id="username" th:field="*{username}">
+        <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</p>
+    </fieldset>
+    <fieldset>
+        <label for="role">Role:</label>
+        <select id="role" th:field="*{role}">
+            <option value="" disabled selected>Select Role</option>
+            <option value="0">Admin</option>
+            <option value="1">Staff</option>
+            <option value="2">Manager</option>
+        </select>
+        <p th:if="${#fields.hasErrors('role')}" th:errors="*{role}">Role Error</p>
+    </fieldset>
+    <fieldset>
+        <label for="email">Email:</label>
+        <input type="email" id="email" th:field="*{email}">
+        <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</p>
+    </fieldset>
+    <fieldset>
+        <input type="submit" value="Save"/>
+        &nbsp; &nbsp;
+        <input type="reset" value="Reset"/>
+    </fieldset>
+</form>
+</body>-->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create User</title>
+    <link rel="stylesheet" href="/css/user-create.css">
+</head>
+<body>
+<h2>Create User Form</h2>
+<form th:action="@{/Admin/users/save}" th:object="${user}" method="post">
+    <input type="hidden" th:field="*{id}">
+    <fieldset>
+        <label for="account">Account:</label>
+        <input type="text" id="account" th:field="*{account}">
+        <p th:if="${#fields.hasErrors('account')}" th:errors="*{account}">Account Error</p>
+    </fieldset>
+    <fieldset>
+        <label for="password">Password:</label>
+        <input type="password" id="password" th:field="*{password}">
+        <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</p>
+    </fieldset>
+    <fieldset>
+        <label for="username">Username:</label>
+        <input type="text" id="username" th:field="*{username}">
+        <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</p>
+    </fieldset>
+    <fieldset>
+        <label for="role">Role:</label>
+        <select id="role" th:field="*{role}">
+            <option value="" disabled selected>Select Role</option>
+            <option value="0">Admin</option>
+            <option value="1">Staff</option>
+            <option value="2">Manager</option>
+        </select>
+        <p th:if="${#fields.hasErrors('role')}" th:errors="*{role}">Role Error</p>
+    </fieldset>
+    <fieldset>
+        <label for="email">Email:</label>
+        <input type="email" id="email" th:field="*{email}">
+        <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</p>
+    </fieldset>
+    <fieldset>
+        <input type="submit" value="Save" class="btn btn-primary"/>
+        &nbsp; &nbsp;
+        <input type="reset" value="Reset" class="btn btn-secondary"/>
+    </fieldset>
+</form>
 </body>
+</html>
+
