@@ -74,15 +74,15 @@ public class LeaveApplication {
         return start_date;
     }
 
-    public void setStart_date(LocalDate start_date) {
+    public void setStart_date(LocalDateTime start_date) {
         this.start_date = start_date;
     }
 
-    public LocalDate getEnd_date() {
+    public LocalDateTime getEnd_date() {
         return end_date;
     }
 
-    public void setEnd_date(LocalDate end_date) {
+    public void setEnd_date(LocalDateTime end_date) {
         this.end_date = end_date;
     }
 
@@ -94,12 +94,11 @@ public class LeaveApplication {
         this.reason = reason;
     }
 
-
-    public LeaveApplicationStatusEnum getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(LeaveApplicationStatusEnum status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -117,21 +116,5 @@ public class LeaveApplication {
 
     public void setUpdated_at(LocalDateTime updated_at) {
         this.updated_at = updated_at;
-    }
-
-    public String getWork_dissemination() {
-        return work_dissemination;
-    }
-
-    public void setWork_dissemination(String work_dissemination) {
-        this.work_dissemination = work_dissemination;
-    }
-
-    public String getContact_details() {
-        return contact_details;
-    }
-
-    public void setContact_details(String contact_details) {
-        this.contact_details = contact_details;
     }
 }
