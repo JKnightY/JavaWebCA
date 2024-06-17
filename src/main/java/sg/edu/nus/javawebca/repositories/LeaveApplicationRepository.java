@@ -10,4 +10,5 @@ import java.util.List;
 public interface LeaveApplicationRepository extends JpaRepository<LeaveApplication, Integer> {
     @Query("SELECT l FROM LeaveApplication l WHERE l.status = :keyword")
     List<LeaveApplication> findLeaveApplicationsByStatus(@Param("keyword") int keyword);
+
 }

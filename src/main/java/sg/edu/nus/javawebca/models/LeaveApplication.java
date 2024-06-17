@@ -1,26 +1,50 @@
 package sg.edu.nus.javawebca.models;
 
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "LeaveApplication")
 public class LeaveApplication {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int employeeId;
-    private char leaveType;//"A" = "annual_leave" "M" = "medical_leave" "C" = "compensation_leave"
-    private LocalDateTime start_date;
-    private LocalDateTime end_date;
+
+    @ManyToOne
+    private User user;
+
+    @ManyToOne
+    private LeaveHistory leaveHistory;
+
+    private char leaveType; // "A" = "annual_leave" "M" = "medical_leave" "C" = "compensation_leave"
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate start_date;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate end_date;
+
     private String reason;
-    @Column(name = "status", nullable = false)
-    private int status;//（1:applied、2:approved、3:rejected、4:cancel、5:updated、6:deleted）
+    private String work_dissemination;
+    private String contact_details;
+    @Column(name = "status", columnDefinition = "ENUM('APPLIED', 'APPROVED', 'REJECTED', 'CANCEL', 'UPDATED', 'DELETED')")
+    @Enumerated(EnumType.STRING)
+    private LeaveApplicationStatusEnum status; //（1:applied、2:approved、3:rejected、4:cancel、5:updated、6:deleted）
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
 
-    public LeaveApplication() {}
+    public LeaveApplication() {
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public int getId() {
         return id;
@@ -30,12 +54,12 @@ public class LeaveApplication {
         this.id = id;
     }
 
-    public int getEmployeeId() {
-        return employeeId;
+    public LeaveHistory getLeaveHistory() {
+        return leaveHistory;
     }
 
-    public void setEmployeeId(int employeeId) {
-        this.employeeId = employeeId;
+    public void setLeaveHistory(LeaveHistory leaveHistory) {
+        this.leaveHistory = leaveHistory;
     }
 
     public char getLeaveType() {
@@ -46,19 +70,19 @@ public class LeaveApplication {
         this.leaveType = leaveType;
     }
 
-    public LocalDateTime getStart_date() {
+    public LocalDate getStart_date() {
         return start_date;
     }
 
-    public void setStart_date(LocalDateTime start_date) {
+    public void setStart_date(LocalDate start_date) {
         this.start_date = start_date;
     }
 
-    public LocalDateTime getEnd_date() {
+    public LocalDate getEnd_date() {
         return end_date;
     }
 
-    public void setEnd_date(LocalDateTime end_date) {
+    public void setEnd_date(LocalDate end_date) {
         this.end_date = end_date;
     }
 
@@ -70,11 +94,12 @@ public class LeaveApplication {
         this.reason = reason;
     }
 
-    public int getStatus() {
+
+    public LeaveApplicationStatusEnum getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(LeaveApplicationStatusEnum status) {
         this.status = status;
     }
 
@@ -92,5 +117,21 @@ public class LeaveApplication {
 
     public void setUpdated_at(LocalDateTime updated_at) {
         this.updated_at = updated_at;
+    }
+
+    public String getWork_dissemination() {
+        return work_dissemination;
+    }
+
+    public void setWork_dissemination(String work_dissemination) {
+        this.work_dissemination = work_dissemination;
+    }
+
+    public String getContact_details() {
+        return contact_details;
+    }
+
+    public void setContact_details(String contact_details) {
+        this.contact_details = contact_details;
     }
 }

@@ -1,7 +1,14 @@
 package sg.edu.nus.javawebca.models;
 
+import jakarta.persistence.*;
+
+import java.util.List;
+
+@Entity
 public class User {
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     private String account;
     private String password;
     private String username;
@@ -11,13 +18,19 @@ public class User {
     private int medical_leave_entitlement;
     private int compensation_leave_balance;
 
+    @OneToMany(mappedBy = "user")
+    private List<LeaveApplication> leaveApplications;
+
+    @OneToMany(mappedBy = "approved_by")
+    private List<CompensationLeave> approvedLeaves;
+
     public User(){}
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
