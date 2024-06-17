@@ -27,6 +27,23 @@ public class LeaveApplication {
     private LocalDate end_date;
 
     private String reason;
+
+    public String getContact_details() {
+        return contact_details;
+    }
+
+    public void setContact_details(String contact_details) {
+        this.contact_details = contact_details;
+    }
+
+    public String getWork_dissemination() {
+        return work_dissemination;
+    }
+
+    public void setWork_dissemination(String work_dissemination) {
+        this.work_dissemination = work_dissemination;
+    }
+
     private String work_dissemination;
     private String contact_details;
     @Column(name = "status", columnDefinition = "ENUM('APPLIED', 'APPROVED', 'REJECTED', 'CANCEL', 'UPDATED', 'DELETED')")
@@ -74,15 +91,15 @@ public class LeaveApplication {
         return start_date;
     }
 
-    public void setStart_date(LocalDateTime start_date) {
+    public void setStart_date(LocalDate start_date) {
         this.start_date = start_date;
     }
 
-    public LocalDateTime getEnd_date() {
+    public LocalDate getEnd_date() {
         return end_date;
     }
 
-    public void setEnd_date(LocalDateTime end_date) {
+    public void setEnd_date(LocalDate end_date) {
         this.end_date = end_date;
     }
 
@@ -94,11 +111,11 @@ public class LeaveApplication {
         this.reason = reason;
     }
 
-    public int getStatus() {
+    public LeaveApplicationStatusEnum getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(LeaveApplicationStatusEnum status) {
         this.status = status;
     }
 
