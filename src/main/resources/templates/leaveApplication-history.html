@@ -8,41 +8,48 @@
 <body>
 <div class="container">
     <h1 class="mt-5">Your Leave Applications</h1>
-    <table class="table mt-3">
-        <thead>
-        <tr>
-            <th>Leave Type</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Reason</th>
-            <th>Work Dissemination</th>
-            <th>Contact Details</th>
-            <th>Status</th>
-            <th>Actions</th> <!-- 添加一个新的表头用于操作 -->
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="leaveApplication : ${leaveApplications}">
-            <td th:text="${leaveApplication.leaveType}"></td>
-            <td th:text="${leaveApplication.start_date}"></td>
-            <td th:text="${leaveApplication.end_date}"></td>
-            <td th:text="${leaveApplication.reason}"></td>
-            <td th:text="${leaveApplication.work_dissemination}"></td>
-            <td th:text="${leaveApplication.contact_details}"></td>
-            <td th:text="${leaveApplication.status}"></td>
-            <td>
-                <div th:if="${#strings.equals(leaveApplication.status, 'APPLIED')  or #strings.equals(leaveApplication.status,'UPDATED')}">
-                    <a th:href="@{/staff/leaveApplication/edit/}+${leaveApplication.id}">Update</a> |
-                    <a th:href="@{/staff/leaveApplication/delete/}+${leaveApplication.id}">Delete</a>
-                </div>
-                <div th:if="${#strings.equals(leaveApplication.status, 'APPROVED')}">
-                    <a th:href="@{/staff/leaveApplication/cancel/}+${leaveApplication.id}">Cancel</a>
-                </div>
 
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <a href="/staff/apply-leave" class="btn btn-primary">Create Leave Application</a>
+    <div th:if="${leaveApplications.isEmpty()}">
+        <h3>You have not submitted any leave applications yet.</h3>
+    </div>
+
+    <div th:if="${!leaveApplications.isEmpty()}">
+        <table class="table mt-3">
+            <thead>
+            <tr>
+                <th>Leave Type</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Reason</th>
+                <th>Work Dissemination</th>
+                <th>Contact Details</th>
+                <th>Status</th>
+                <th>Actions</th> <!-- 添加一个新的表头用于操作 -->
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="leaveApplication : ${leaveApplications}">
+                <td th:text="${leaveApplication.leaveType}"></td>
+                <td th:text="${leaveApplication.start_date}"></td>
+                <td th:text="${leaveApplication.end_date}"></td>
+                <td th:text="${leaveApplication.reason}"></td>
+                <td th:text="${leaveApplication.work_dissemination}"></td>
+                <td th:text="${leaveApplication.contact_details}"></td>
+                <td th:text="${leaveApplication.status}"></td>
+                <td>
+                    <div th:if="${#strings.equals(leaveApplication.status, 'APPLIED')  or #strings.equals(leaveApplication.status,'UPDATED')}">
+                        <a th:href="@{/staff/leaveApplication/edit/}+${leaveApplication.id}">Update</a> |
+                        <a th:href="@{/staff/leaveApplication/delete/}+${leaveApplication.id}">Delete</a>
+                    </div>
+                    <div th:if="${#strings.equals(leaveApplication.status, 'APPROVED')}">
+                        <a th:href="@{/staff/leaveApplication/cancel/}+${leaveApplication.id}">Cancel</a>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 </body>
 </html>
