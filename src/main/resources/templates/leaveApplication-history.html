@@ -7,6 +7,13 @@
 </head>
 <body>
 <div class="container">
+    <nav class="sidebar">
+        <h2>Menu</h2>
+        <ul>
+            <li><a th:href="@{/staff/leaveApplication/history}">Manage LeaveApplication</a></li>
+            <li><a th:href="@{/staff/claimCompensation/history}">Manage claimCompensation</a></li>
+        </ul>
+    </nav>
     <h1 class="mt-5">Your Leave Applications</h1>
 
     <a href="/staff/apply-leave" class="btn btn-primary">Create Leave Application</a>

@@ -15,7 +15,6 @@ public class LeaveHistory {
     @OneToMany(mappedBy="leaveHistory")
     private List<LeaveApplication> leaveApplications;
 
-    private int leaveType;
     private LocalDate start_date;
     private LocalDate end_date;
     private LeaveApplicationStatusEnum status;
@@ -37,14 +36,6 @@ public class LeaveHistory {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getLeaveType() {
-        return leaveType;
-    }
-
-    public void setLeaveType(int leaveType) {
-        this.leaveType = leaveType;
     }
 
     public LocalDate getStart_date() {
