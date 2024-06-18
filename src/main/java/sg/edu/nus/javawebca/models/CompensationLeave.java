@@ -17,14 +17,24 @@ public class CompensationLeave {
     private LeaveApplicationStatusEnum status;//（1:applied、2:approved、3:rejected ...)
     @ManyToOne
     private User approved_by;
+
+    @ManyToOne
+    private CompensationLeaveHistory CompensationLeaveHistory;
     private LocalDateTime create_at;
     private LocalDateTime update_at;
     private String reason;
     private String contact_details;
     private String work_dissemination;
     private String claim_period; // "MORNING", "AFTERNOON", "FULL_DAY"
-
     public CompensationLeave() {
+    }
+
+    public sg.edu.nus.javawebca.models.CompensationLeaveHistory getCompensationLeaveHistory() {
+        return CompensationLeaveHistory;
+    }
+
+    public void setCompensationLeaveHistory(sg.edu.nus.javawebca.models.CompensationLeaveHistory compensationLeaveHistory) {
+        CompensationLeaveHistory = compensationLeaveHistory;
     }
 
     public LeaveApplicationStatusEnum getStatus() {

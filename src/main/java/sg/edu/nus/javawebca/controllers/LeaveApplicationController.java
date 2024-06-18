@@ -56,7 +56,7 @@ public class LeaveApplicationController {
     }
 
     @GetMapping("/leaveApplication/edit/{id}")
-    public String editCoursePage(@PathVariable Integer id, Model model) {
+    public String editLeavePage(@PathVariable Integer id, Model model) {
        LeaveApplication leaveApplication = leaveApplicationinterface.findLeaveApplicationById(id);
         model.addAttribute("leaveApplication", leaveApplication);
 
@@ -64,7 +64,7 @@ public class LeaveApplicationController {
     }
 
     @PostMapping("/leaveApplication/edit/{id}")
-    public String editCourse(@ModelAttribute LeaveApplication leaveApplication, BindingResult result, @PathVariable Integer id){
+    public String editLeave(@ModelAttribute LeaveApplication leaveApplication, BindingResult result, @PathVariable Integer id){
         leaveApplication.setStatus(LeaveApplicationStatusEnum.UPDATED);
         leaveApplication.setUpdated_at(LocalDateTime.now());
         leaveApplicationinterface.updateLeaveApplication(leaveApplication);
