@@ -1,18 +1,15 @@
 package sg.edu.nus.javawebca.controllers;
 
-import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import sg.edu.nus.javawebca.models.LeaveEntitlement;
 import sg.edu.nus.javawebca.models.LeaveType;
 import sg.edu.nus.javawebca.models.User;
 import sg.edu.nus.javawebca.services.AdminService;
 import java.util.Optional;
 import jakarta.validation.Valid;
-import sg.edu.nus.javawebca.services.LeaveEntitlementService;
 import sg.edu.nus.javawebca.services.LeaveTypeService;
 
 
@@ -23,8 +20,6 @@ public class AdminController {
     private AdminService adminService;
     @Autowired
     private LeaveTypeService leaveTypeService;
-    @Autowired
-    private LeaveEntitlementService leaveEntitlementService;
 
     @GetMapping("/users")
     public String listUsers(Model model) {
@@ -156,23 +151,6 @@ public class AdminController {
     public String listLeaveEntitlements(Model model) {
         model.addAttribute("users", adminService.findAllUsers());
         return "leaveEntitlement-manage";
-    }
-
-    @GetMapping("/leaveentitlements/{id}")
-    public String getLeaveEntitlement(@PathVariable int id, Model model) {
-        Optional<LeaveEntitlement> leaveEntitlement = leaveEntitlementService.findLeaveEntitlementById(id);
-        if (leaveEntitlement.isPresent()) {
-            model.addAttribute("leaveentitlement", leaveEntitlement.get());
-            return "leaveEntitlement-update";
-        } else {
-            return "redirect:/Admin/leaveentitlements";
-        }
-    }
-
-    @RequestMapping("/leaveentitlements/create")
-    public String createLeaveEntitlement(Model model) {
-        model.addAttribute("leaveentitlement", new LeaveEntitlement());
-        return "leaveEntitlement-update";
     }
 
     @RequestMapping("/leaveentitlements/save")
