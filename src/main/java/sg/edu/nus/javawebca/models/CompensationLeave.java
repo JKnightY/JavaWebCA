@@ -1,16 +1,23 @@
 package sg.edu.nus.javawebca.models;
 
-import java.time.LocalDateTime;
+import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+@Entity
 public class CompensationLeave {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private int employeeId;
     private LocalDateTime claim_date;
     private double hours_worked;
     private int status;//（1:applied、2:approved、3:rejected)
+    @ManyToOne
     private User approved_by;
     private LocalDateTime create_at;
     private LocalDateTime update_at;
+    @ManyToOne
+    private LeaveHistory leaveHistory;
 
     public CompensationLeave() {}
 

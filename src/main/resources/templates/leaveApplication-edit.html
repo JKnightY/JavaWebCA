@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Leave Application</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h1 class="mt-5">Edit Leave Application</h1>
+    <form th:action="@{/staff/leaveApplication/edit/{id}(id=${leaveApplication.id})}" th:object="${leaveApplication}" method="post" class="mt-3">
+        <div class="form-group">
+            <label for="leaveType">Leave Type:</label>
+            <select id="leaveType" th:field="*{leaveType}" name="leaveType" class="form-control">
+                <option value="A" th:selected="${leaveApplication.leaveType == 'A'}">Annual Leave</option>
+                <option value="M" th:selected="${leaveApplication.leaveType == 'M'}">Medical Leave</option>
+                <option value="C" th:selected="${leaveApplication.leaveType == 'C'}">Compensation Leave</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="startDate">Start Date:</label>
+            <input type="date" id="startDate" th:field="*{start_date}" name="start_date" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="endDate">End Date:</label>
+            <input type="date" id="endDate" th:field="*{end_date}" name="end_date" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="reason">Reason:</label>
+            <textarea id="reason" th:field="*{reason}" name="reason" class="form-control"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="workDissemination">Work Dissemination:</label>
+            <textarea id="workDissemination" th:field="*{work_dissemination}" name="work_dissemination" class="form-control"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="contactDetails">Contact Details (if on an overseas trip):</label>
+            <textarea id="contactDetails" th:field="*{contact_details}" name="contact_details" class="form-control"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+</div>
+</body>
+</html>

@@ -15,8 +15,14 @@
     <description>JavaWebCA</description>
     <properties>
         <java.version>17</java.version>
+        <spring-ai.version>1.0.0-M1</spring-ai.version>
     </properties>
     <dependencies>
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+            <version>3.0.2</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jdbc</artifactId>
@@ -73,6 +79,8 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    <dependencyManagement>
+    </dependencyManagement>
 
     <build>
         <plugins>

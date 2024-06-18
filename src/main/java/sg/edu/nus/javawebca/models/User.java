@@ -1,23 +1,46 @@
 package sg.edu.nus.javawebca.models;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotNull;
+import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.util.List;
+
+
+@Entity
 public class User {
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    @NotNull(message = "account must be provided")
     private String account;
     private String password;
+    @NotNull(message = "username must be provided")
     private String username;
-    private int role;//"0" = "admin" "1" = "staff" "2" = "manager"
+    @NotNull(message = "role type must be provided")
+    private Integer role;//"0" = "admin" "1" = "staff" "2" = "manager"
     private String email;
     private int annual_leave_entitlement;
     private int medical_leave_entitlement;
     private int compensation_leave_balance;
 
+    @OneToMany(mappedBy = "user")
+    private List<LeaveApplication> leaveApplications;
+
+    @OneToMany(mappedBy = "approved_by")
+    private List<CompensationLeave> approvedLeaves;
+
     public User(){}
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -45,11 +68,11 @@ public class User {
         this.username = username;
     }
 
-    public int getRole() {
+    public Integer getRole() {
         return role;
     }
 
-    public void setRole(int role) {
+    public void setRole(Integer role) {
         this.role = role;
     }
 

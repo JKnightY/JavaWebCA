@@ -1,13 +1,20 @@
 package sg.edu.nus.javawebca.models;
 
-import java.time.LocalDateTime;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
-public class Publicholiday {
+import java.time.LocalDateTime;
+@Entity
+public class PublicHoliday {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private LocalDateTime holiday_date;
     private String description;
 
-    public Publicholiday() {}
+    public PublicHoliday() {}
 
     public int getId() {
         return id;
