@@ -15,6 +15,9 @@ public class LeaveHistory {
     @OneToMany(mappedBy="leaveHistory")
     private List<LeaveApplication> leaveApplications;
 
+    @OneToMany(mappedBy="leaveHistory")
+    private List<CompensationLeave> compensationLeaves;
+
     private int leaveType;
     private LocalDate start_date;
     private LocalDate end_date;

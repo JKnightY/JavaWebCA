@@ -16,6 +16,8 @@ public class CompensationLeave {
     private User approved_by;
     private LocalDateTime create_at;
     private LocalDateTime update_at;
+    @ManyToOne
+    private LeaveHistory leaveHistory;
 
     public CompensationLeave() {}
 

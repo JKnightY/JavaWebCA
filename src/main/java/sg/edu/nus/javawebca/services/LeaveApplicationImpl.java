@@ -31,7 +31,6 @@ public class LeaveApplicationImpl implements LeaveApplicationInterface {
     @Override
     @Transactional
     public LeaveApplication updateLeaveApplication(LeaveApplication leaveApplication){
-        leaveApplication.setStatus(LeaveApplicationStatusEnum.UPDATED);
         return leaveApplicationRepository.save(leaveApplication);
     }
 
