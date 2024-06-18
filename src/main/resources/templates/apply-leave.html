@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Apply Leave</title>
@@ -11,29 +11,35 @@
     <form action="/staff/apply-leave" th:object="${leaveApplication}" method="post" class="mt-3">
         <div class="form-group">
             <label for="leaveType">Leave Type:</label>
-            <select id="leaveType" th:field="*{leaveType.id}" name="leaveType" class="form-control">
+            <select id="leaveType" th:field="*{leaveType.id}" class="form-control">
                 <option th:each="leaveType : ${leaveTypes}" th:value="${leaveType.id}" th:text="${leaveType.name}"></option>
             </select>
+            <div th:if="${#fields.hasErrors('leaveType')}" th:errors="*{leaveType}" class="text-danger"></div>
         </div>
         <div class="form-group">
             <label for="startDate">Start Date:</label>
-            <input type="date" id="startDate" th:field="*{start_date}" name="start_date" class="form-control">
+            <input type="date" id="startDate" th:field="*{start_date}" class="form-control">
+            <div th:if="${#fields.hasErrors('start_date')}" th:errors="*{start_date}" class="text-danger"></div>
         </div>
         <div class="form-group">
             <label for="endDate">End Date:</label>
-            <input type="date" id="endDate" th:field="*{end_date}" name="end_date" class="form-control">
+            <input type="date" id="endDate" th:field="*{end_date}" class="form-control">
+            <div th:if="${#fields.hasErrors('end_date')}" th:errors="*{end_date}" class="text-danger"></div>
         </div>
         <div class="form-group">
             <label for="reason">Reason:</label>
-            <textarea id="reason" th:field="*{reason}" name="reason" class="form-control"></textarea>
+            <textarea id="reason" th:field="*{reason}" class="form-control"></textarea>
+            <div th:if="${#fields.hasErrors('reason')}" th:errors="*{reason}" class="text-danger"></div>
         </div>
         <div class="form-group">
             <label for="workDissemination">Work Dissemination:</label>
-            <textarea id="workDissemination" th:field="*{work_dissemination}" name="work_dissemination" class="form-control"></textarea>
+            <textarea id="workDissemination" th:field="*{work_dissemination}" class="form-control"></textarea>
+            <div th:if="${#fields.hasErrors('work_dissemination')}" th:errors="*{work_dissemination}" class="text-danger"></div>
         </div>
         <div class="form-group">
             <label for="contactDetails">Contact Details (if on an overseas trip):</label>
-            <textarea id="contactDetails" th:field="*{contact_details}" name="contact_details" class="form-control"></textarea>
+            <textarea id="contactDetails" th:field="*{contact_details}" class="form-control"></textarea>
+            <div th:if="${#fields.hasErrors('contact_details')}" th:errors="*{contact_details}" class="text-danger"></div>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>

@@ -28,13 +28,13 @@ public class LeaveApplicationController {
     @Autowired
     private LeaveTypeService leaveTypeService;
 
-//    @Autowired
-//    private LeaveApplicationValidator leaveApplicationValidator;
+    @Autowired
+    private LeaveApplicationValidator leaveApplicationValidator;
 
-//    @InitBinder("leaveApplication")
-//    private void initCourseBinder(WebDataBinder binder) {
-//        binder.addValidators(leaveApplicationValidator);
-//    }
+    @InitBinder("leaveApplication")
+    private void initCourseBinder(WebDataBinder binder) {
+        binder.addValidators(leaveApplicationValidator);
+    }
 
 
     @Autowired
