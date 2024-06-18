@@ -20,29 +20,31 @@
         <table>
             <thead>
             <tr>
-                <th>ID</th>
-                <th>Leave Entitlement Name</th>
-                <th>Days</th>
+                <th>Name</th>
+                <th>Annual leave</th>
+                <th>last</th>
+                <th>Medical leave</th>
+                <th>last</th>
+                <th>Compensation leave</th>
+                <th>last</th>
                 <th style="width: 200px;">Actions</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="leaveentitlement : ${leaveentitlements}">
-                <td th:text="${leaveentitlement.id}"></td>
-                <td th:text="${leaveentitlement.name}"></td>
-                <td th:text="${leaveentitlement.days}"></td>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.username}"></td>
+                <td th:text="${user.annual_leave_entitlement}"></td>
+                <td th:text="${user.annual_leave_entitlement_last}"></td>
+                <td th:text="${user.medical_leave_entitlement}"></td>
+                <td th:text="${user.medical_leave_entitlement_last}"></td>
+                <td th:text="${user.compensation_leave_balance}"></td>
+                <td th:text="${user.compensation_leave_balance_last}"></td>
                 <td class="actions">
-                    <a th:href="@{/Admin/leaveentitlements/update/{id}(id=${leaveentitlement.id})}" class="btn btn-primary">Update</a>
-                    <form th:action="@{/Admin/leaveentitlements/delete/{id}(id=${leaveentitlement.id})}" method="post" style="display:inline;">
-                        <input type="hidden" name="_method" value="delete" />
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this leave entitlement?');">Delete</button>
-                    </form>
+                    <a th:href="@{/Admin/leaveentitlements/update/{id}(id=${user.id})}" class="btn btn-primary">Update</a>
                 </td>
             </tr>
             </tbody>
         </table>
-        <a th:href="@{/Admin/leaveentitlements/create}" class="btn btn-success">Create New Leave Entitlement</a>
 
     </div>
 </div>

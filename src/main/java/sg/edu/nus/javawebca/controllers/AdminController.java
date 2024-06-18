@@ -1,5 +1,6 @@
 package sg.edu.nus.javawebca.controllers;
 
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -54,6 +55,23 @@ public class AdminController {
             bindingResult.getAllErrors().forEach(error -> System.out.println(error.toString()));
             return "user-create";
         }
+
+        if(inuser.getRole()==0 || inuser.getRole()==1){
+            Optional<LeaveType> AnnualleaveTypeO = leaveTypeService.findLeaveTypeById(1);
+            Optional<LeaveType> MedicalleaveTypeO = leaveTypeService.findLeaveTypeById(3);
+            LeaveType AnnualleaveType = AnnualleaveTypeO.get();
+            LeaveType MedicalleaveType = MedicalleaveTypeO.get();
+            inuser.setAnnual_leave_entitlement(AnnualleaveType.getMaxdays());
+            inuser.setMedical_leave_entitlement(MedicalleaveType.getMaxdays());
+        }else{
+            Optional<LeaveType> AnnualleaveTypeO = leaveTypeService.findLeaveTypeById(2);
+            Optional<LeaveType> MedicalleaveTypeO = leaveTypeService.findLeaveTypeById(3);
+            LeaveType AnnualleaveType = AnnualleaveTypeO.get();
+            LeaveType MedicalleaveType = MedicalleaveTypeO.get();
+            inuser.setAnnual_leave_entitlement(AnnualleaveType.getMaxdays());
+            inuser.setMedical_leave_entitlement(MedicalleaveType.getMaxdays());
+        }
+
         adminService.updateUser(inuser);
         return "redirect:/Admin/users";
     }
@@ -136,7 +154,7 @@ public class AdminController {
 
     @GetMapping("/leaveentitlements")
     public String listLeaveEntitlements(Model model) {
-        model.addAttribute("leaveentitlements", leaveEntitlementService.findAllLeaveEntitlements());
+        model.addAttribute("users", adminService.findAllUsers());
         return "leaveEntitlement-manage";
     }
 
@@ -145,7 +163,7 @@ public class AdminController {
         Optional<LeaveEntitlement> leaveEntitlement = leaveEntitlementService.findLeaveEntitlementById(id);
         if (leaveEntitlement.isPresent()) {
             model.addAttribute("leaveentitlement", leaveEntitlement.get());
-            return "leaveEntitlement-create";
+            return "leaveEntitlement-update";
         } else {
             return "redirect:/Admin/leaveentitlements";
         }
@@ -154,34 +172,36 @@ public class AdminController {
     @RequestMapping("/leaveentitlements/create")
     public String createLeaveEntitlement(Model model) {
         model.addAttribute("leaveentitlement", new LeaveEntitlement());
-        return "leaveEntitlement-create";
+        return "leaveEntitlement-update";
     }
 
     @RequestMapping("/leaveentitlements/save")
-    public String saveLeaveEntitlement(@ModelAttribute("leaveentitlement") @Valid LeaveEntitlement leaveEntitlement, BindingResult bindingResult, Model model) {
+    public String saveLeaveEntitlement(@ModelAttribute("usertoupdate") @Valid User inuser, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             bindingResult.getAllErrors().forEach(error -> System.out.println(error.toString()));
-            return "leaveEntitlement-create";
+            return "leaveEntitlement-update";
         }
-        leaveEntitlementService.createLeaveEntitlement(leaveEntitlement);
-        return "redirect:/Admin/leaveentitlements";
-    }
+        Optional<User> originalUser = adminService.findUserById(inuser.getId());
+        if (originalUser.isPresent()) {
+            User existingUser = originalUser.get();
 
-    @RequestMapping("/leaveentitlements/delete/{id}")
-    public String deleteLeaveEntitlement(@PathVariable int id) {
-        Optional<LeaveEntitlement> leaveEntitlement = leaveEntitlementService.findLeaveEntitlementById(id);
-        if (leaveEntitlement.isPresent()) {
-            leaveEntitlementService.deleteLeaveEntitlement(leaveEntitlement.get());
+            inuser.setUsername(existingUser.getUsername());
+            inuser.setPassword(existingUser.getPassword());
+            inuser.setRole(existingUser.getRole());
+            inuser.setAccount(existingUser.getAccount());
+            inuser.setEmail(existingUser.getEmail());
+
         }
+        adminService.updateUser(inuser);
         return "redirect:/Admin/leaveentitlements";
     }
 
     @GetMapping("/leaveentitlements/update/{id}")
     public String updateLeaveEntitlement(@PathVariable int id, Model model) {
-        Optional<LeaveEntitlement> leaveEntitlement = leaveEntitlementService.findLeaveEntitlementById(id);
-        if (leaveEntitlement.isPresent()) {
-            model.addAttribute("leaveentitlement", leaveEntitlement.get());
-            return "leaveEntitlement-create";
+        Optional<User> usertoupdate = adminService.findUserById(id);
+        if (usertoupdate.isPresent()) {
+            model.addAttribute("usertoupdate", usertoupdate.get());
+            return "leaveEntitlement-update";
         } else {
             return "redirect:/Admin/leaveentitlements";
         }

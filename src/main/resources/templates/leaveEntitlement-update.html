@@ -1,0 +1,102 @@
+<!--<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Leave Entitlement</title>
+    <link rel="stylesheet" href="/css/user-create.css">
+</head>
+<body>
+<div class="container">
+    <div class="content">
+        <h2>Update Leave Entitlement Form</h2>
+        <h3 th:text="'User: ' + ${usertoupdate.username}"></h3>
+        <form th:action="@{/Admin/users/save}" th:object="${usertoupdate}" method="post">
+            <input type="hidden" th:field="*{id}">
+            <fieldset>
+                <label for="Annual leave">Annual leave:</label>
+                <input type="text" id="Annual leave" th:field="*{annual_leave_entitlement}">
+                <p th:if="${#fields.hasErrors('name')}" th:errors="*{annual_leave_entitlement}">Employee ID Error</p>
+            </fieldset>
+            <fieldset>
+                <label for="days">Days:</label>
+                <input type="text" id="days" th:field="*{days}">
+                <p th:if="${#fields.hasErrors('days')}" th:errors="*{days}">Days Error</p>
+            </fieldset>
+            <fieldset>
+                <input type="submit" value="Save" class="btn btn-primary"/>
+                &nbsp; &nbsp;
+                <input type="reset" value="Reset" class="btn btn-secondary"/>
+            </fieldset>
+        </form>
+    </div>
+</div>
+</body>
+</html>-->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Leave Entitlement</title>
+    <link rel="stylesheet" href="/css/user-create.css">
+</head>
+<body>
+<div class="container">
+    <div class="content">
+        <h2>Create Leave Entitlement Form</h2>
+        <h3 th:text="'User: ' + ${usertoupdate.username}"></h3>
+        <form th:action="@{/Admin/leaveentitlements/save}" th:object="${usertoupdate}" method="post">
+            <input type="hidden" th:field="*{id}">
+            <input type="hidden" th:field="*{username}">
+            <input type="hidden" th:field="*{email}">
+            <input type="hidden" th:field="*{role}">
+            <input type="hidden" th:field="*{account}">
+            <input type="hidden" th:field="*{password}">
+            <table>
+                <tr>
+                    <th>Annual leave</th>
+                    <th>Last</th>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" id="annual_leave_entitlement" th:field="*{annual_leave_entitlement}">
+                    </td>
+                    <td>
+                        <input type="text" id="annual_leave_last" th:field="*{annual_leave_entitlement_last}">
+                    </td>
+                </tr>
+                <tr>
+                    <th>Medical leave</th>
+                    <th>Last</th>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" id="medical_leave_entitlement" th:field="*{medical_leave_entitlement}">
+                    </td>
+                    <td>
+                        <input type="text" id="medical_leave_last" th:field="*{medical_leave_entitlement_last}">
+                    </td>
+                </tr>
+                <tr>
+                    <th>Compensation leave</th>
+                    <th>Last</th>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" id="compensation_leave_entitlement" th:field="*{compensation_leave_balance}">
+                    </td>
+                    <td>
+                        <input type="text" id="compensation_leave_last" th:field="*{compensation_leave_balance_last}">
+                    </td>
+                </tr>
+            </table>
+            <fieldset>
+                <input type="submit" value="Save" class="btn btn-primary"/>
+                &nbsp; &nbsp;
+                <input type="reset" value="Reset" class="btn btn-secondary"/>
+            </fieldset>
+        </form>
+    </div>
+</div>
+</body>
+</html>

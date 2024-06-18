@@ -10,6 +10,7 @@ public class LeaveType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
+    private int maxdays;
 
     @OneToMany(mappedBy = "leaveType", cascade = CascadeType.ALL)
     private List<LeaveApplication> leaveApplications;
@@ -38,4 +39,19 @@ public class LeaveType {
         this.leaveApplications = leaveApplications;
     }
 
+    public int getMaxdays() {
+        return maxdays;
+    }
+
+    public void setMaxdays(int maxdays) {
+        this.maxdays = maxdays;
+    }
+
+    public LeaveType(){
+
+    }
+
+    public LeaveType(int id){
+        this.id = id;
+    }
 }

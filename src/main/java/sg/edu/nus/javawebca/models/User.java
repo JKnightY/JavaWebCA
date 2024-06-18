@@ -23,11 +23,56 @@ public class User {
     @NotNull(message = "username must be provided")
     private String username;
     @NotNull(message = "role type must be provided")
-    private Integer role;//"0" = "admin" "1" = "staff" "2" = "manager"
+    private Integer role = 1;//"0" = "admin" "1" = "staff" "2" = "manager"
     private String email;
     private int annual_leave_entitlement;
+    private int annual_leave_entitlement_last;
     private int medical_leave_entitlement;
+    private int medical_leave_entitlement_last;
     private int compensation_leave_balance;
+    private int compensation_leave_balance_last;
+
+    public int getAnnual_leave_entitlement_last() {
+        return annual_leave_entitlement_last;
+    }
+
+    public void setAnnual_leave_entitlement_last(int annual_leave_entitlement_last) {
+        this.annual_leave_entitlement_last = annual_leave_entitlement_last;
+    }
+
+    public int getMedical_leave_entitlement_last() {
+        return medical_leave_entitlement_last;
+    }
+
+    public void setMedical_leave_entitlement_last(int medical_leave_entitlement_last) {
+        this.medical_leave_entitlement_last = medical_leave_entitlement_last;
+    }
+
+    public int getCompensation_leave_balance_last() {
+        return compensation_leave_balance_last;
+    }
+
+    public void setCompensation_leave_balance_last(int compensation_leave_balance_last) {
+        this.compensation_leave_balance_last = compensation_leave_balance_last;
+    }
+
+    public List<LeaveApplication> getLeaveApplications() {
+        return leaveApplications;
+    }
+
+    public void setLeaveApplications(List<LeaveApplication> leaveApplications) {
+        this.leaveApplications = leaveApplications;
+    }
+
+    public List<CompensationLeave> getApprovedLeaves() {
+        return approvedLeaves;
+    }
+
+    public void setApprovedLeaves(List<CompensationLeave> approvedLeaves) {
+        this.approvedLeaves = approvedLeaves;
+    }
+
+
 
     @OneToMany(mappedBy = "user")
     private List<LeaveApplication> leaveApplications;

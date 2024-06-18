@@ -15,6 +15,10 @@
         <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</p>
     </fieldset>
     <fieldset>
+        <label for="maxdays">Max leave days:</label>
+        <input type="text" id="maxdays" th:field="*{maxdays}">
+    </fieldset>
+    <fieldset>
         <input type="submit" value="Save" class="btn btn-primary"/>
         &nbsp; &nbsp;
         <input type="reset" value="Reset" class="btn btn-secondary"/>

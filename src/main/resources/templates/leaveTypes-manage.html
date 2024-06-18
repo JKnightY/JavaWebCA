@@ -22,6 +22,7 @@
             <tr>
                 <th>ID</th>
                 <th>Name</th>
+                <th>Max leave days</th>
                 <th style="width: 200px;">Actions</th>
             </tr>
             </thead>
@@ -29,6 +30,7 @@
             <tr th:each="leavetype : ${leavetypes}">
                 <td th:text="${leavetype.id}"></td>
                 <td th:text="${leavetype.name}"></td>
+                <td th:text="${leavetype.maxdays}"></td>
                 <td class="actions">
                     <a th:href="@{/Admin/leavetypes/update/{id}(id=${leavetype.id})}" class="btn btn-primary">Update</a>
                     <form th:action="@{/Admin/leavetypes/delete/{id}(id=${leavetype.id})}" method="post" style="display:inline;">
@@ -45,4 +47,3 @@
 </div>
 </body>
 </html>
-
