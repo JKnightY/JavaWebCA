@@ -1,9 +1,8 @@
 package sg.edu.nus.javawebca.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 public class LeaveType {
@@ -11,6 +10,9 @@ public class LeaveType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
+
+    @OneToMany(mappedBy = "leaveType", cascade = CascadeType.ALL)
+    private List<LeaveApplication> leaveApplications;
 
     public int getId() {
         return id;
@@ -26,6 +28,14 @@ public class LeaveType {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<LeaveApplication> getLeaveApplications() {
+        return leaveApplications;
+    }
+
+    public void setLeaveApplications(List<LeaveApplication> leaveApplications) {
+        this.leaveApplications = leaveApplications;
     }
 
 }

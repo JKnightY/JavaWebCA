@@ -8,6 +8,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import sg.edu.nus.javawebca.models.LeaveApplicationStatusEnum;
+import sg.edu.nus.javawebca.models.LeaveType;
+import sg.edu.nus.javawebca.repositories.LeaveTypeRepository;
 import sg.edu.nus.javawebca.services.LeaveApplicationInterface;
 import sg.edu.nus.javawebca.models.LeaveApplication;
 import sg.edu.nus.javawebca.validator.LeaveApplicationValidator;
@@ -20,6 +22,9 @@ import java.util.List;
 public class LeaveApplicationController {
     @Autowired
     private LeaveApplicationInterface leaveApplicationinterface;
+
+    @Autowired
+    private LeaveTypeRepository leaveTypeRepository;
 
 //    @Autowired
 //    private LeaveApplicationValidator leaveApplicationValidator;
@@ -44,6 +49,8 @@ public class LeaveApplicationController {
 
     @GetMapping("/apply-leave")
     public String showApplyLeaveForm(Model model) {
+        List<LeaveType> leaveTypes = leaveTypeRepository.findAll();
+        model.addAttribute("leaveTypes", leaveTypes);
         model.addAttribute("leaveApplication", new LeaveApplication());
         return "apply-leave"; // The form for applying leave
     }

@@ -18,7 +18,9 @@ public class LeaveApplication {
     @ManyToOne
     private LeaveHistory leaveHistory;
 
-    private char leaveType; // "A" = "annual_leave" "M" = "medical_leave" "C" = "compensation_leave"
+    @ManyToOne
+    @JoinColumn(name = "leave_type_id", referencedColumnName = "id")
+    private LeaveType leaveType;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate start_date;
@@ -77,11 +79,11 @@ public class LeaveApplication {
         this.leaveHistory = leaveHistory;
     }
 
-    public char getLeaveType() {
+    public LeaveType getLeaveType() {
         return leaveType;
     }
 
-    public void setLeaveType(char leaveType) {
+    public void setLeaveType(LeaveType leaveType) {
         this.leaveType = leaveType;
     }
 
