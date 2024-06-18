@@ -7,53 +7,41 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-public class LeaveHistory {
+public class CompensationLeaveHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToMany(mappedBy="leaveHistory")
-    private List<LeaveApplication> leaveApplications;
+    @OneToMany(mappedBy = "CompensationLeaveHistory")
+    private List<CompensationLeave> compensationLeaves;
 
-    private LocalDate start_date;
-    private LocalDate end_date;
+    private LocalDate claim_date;
     private LeaveApplicationStatusEnum status;
     private LocalDateTime create_date;
 
-    public LeaveHistory() {}
-
     public int getId() {
         return id;
-    }
-
-    public List<LeaveApplication> getLeaveApplications() {
-        return leaveApplications;
-    }
-
-    public void setLeaveApplications(List<LeaveApplication> leaveApplications) {
-        this.leaveApplications = leaveApplications;
     }
 
     public void setId(int id) {
         this.id = id;
     }
 
-    public LocalDate getStart_date() {
-        return start_date;
+    public List<CompensationLeave> getCompensationLeaves() {
+        return compensationLeaves;
     }
 
-    public void setStart_date(LocalDate start_date) {
-        this.start_date = start_date;
+    public void setCompensationLeaves(List<CompensationLeave> compensationLeaves) {
+        this.compensationLeaves = compensationLeaves;
     }
 
-    public LocalDate getEnd_date() {
-        return end_date;
+    public LocalDate getClaim_date() {
+        return claim_date;
     }
 
-    public void setEnd_date(LocalDate end_date) {
-        this.end_date = end_date;
+    public void setClaim_date(LocalDate claim_date) {
+        this.claim_date = claim_date;
     }
-
 
     public LeaveApplicationStatusEnum getStatus() {
         return status;

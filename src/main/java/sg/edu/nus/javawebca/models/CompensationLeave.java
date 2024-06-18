@@ -2,24 +2,80 @@ package sg.edu.nus.javawebca.models;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+
 @Entity
 public class CompensationLeave {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int employeeId;
-    private LocalDateTime claim_date;
+    private LocalDate claim_date;
     private double hours_worked;
-    private int status;//（1:applied、2:approved、3:rejected)
+    @Column(name = "status", columnDefinition = "ENUM('APPLIED', 'APPROVED', 'REJECTED', 'CANCEL', 'UPDATED', 'DELETED')")
+    @Enumerated(EnumType.STRING)
+    private LeaveApplicationStatusEnum status;//（1:applied、2:approved、3:rejected ...)
     @ManyToOne
     private User approved_by;
+
+    @ManyToOne
+    private CompensationLeaveHistory CompensationLeaveHistory;
     private LocalDateTime create_at;
     private LocalDateTime update_at;
-    @ManyToOne
-    private LeaveHistory leaveHistory;
+    private String reason;
+    private String contact_details;
+    private String work_dissemination;
+    private String claim_period; // "MORNING", "AFTERNOON", "FULL_DAY"
+    public CompensationLeave() {
+    }
 
-    public CompensationLeave() {}
+    public sg.edu.nus.javawebca.models.CompensationLeaveHistory getCompensationLeaveHistory() {
+        return CompensationLeaveHistory;
+    }
+
+    public void setCompensationLeaveHistory(sg.edu.nus.javawebca.models.CompensationLeaveHistory compensationLeaveHistory) {
+        CompensationLeaveHistory = compensationLeaveHistory;
+    }
+
+    public LeaveApplicationStatusEnum getStatus() {
+        return status;
+    }
+
+    public void setStatus(LeaveApplicationStatusEnum status) {
+        this.status = status;
+    }
+
+    public String getClaim_period() {
+        return claim_period;
+    }
+
+    public void setClaim_period(String claim_period) {
+        this.claim_period = claim_period;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public String getContact_details() {
+        return contact_details;
+    }
+
+    public void setContact_details(String contact_details) {
+        this.contact_details = contact_details;
+    }
+
+    public String getWork_dissemination() {
+        return work_dissemination;
+    }
+
+    public void setWork_dissemination(String work_dissemination) {
+        this.work_dissemination = work_dissemination;
+    }
 
     public int getId() {
         return id;
@@ -29,19 +85,11 @@ public class CompensationLeave {
         this.id = id;
     }
 
-    public int getEmployeeId() {
-        return employeeId;
-    }
-
-    public void setEmployeeId(int employeeId) {
-        this.employeeId = employeeId;
-    }
-
-    public LocalDateTime getClaim_date() {
+    public LocalDate getClaim_date() {
         return claim_date;
     }
 
-    public void setClaim_date(LocalDateTime claim_date) {
+    public void setClaim_date(LocalDate claim_date) {
         this.claim_date = claim_date;
     }
 
@@ -53,13 +101,6 @@ public class CompensationLeave {
         this.hours_worked = hours_worked;
     }
 
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
 
     public User getApproved_by() {
         return approved_by;

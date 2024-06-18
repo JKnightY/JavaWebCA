@@ -7,6 +7,13 @@
 </head>
 <body>
 <div class="container">
+    <nav class="sidebar">
+        <h2>Menu</h2>
+        <ul>
+            <li><a th:href="@{/staff/leaveApplication/history}">Manage LeaveApplication</a></li>
+            <li><a th:href="@{/staff/compensationLeave/history}">Manage claimCompensation</a></li>
+        </ul>
+    </nav>
     <h1 class="mt-5">Your Leave Applications</h1>
 
     <a href="/staff/apply-leave" class="btn btn-primary">Create Leave Application</a>
@@ -30,7 +37,7 @@
             </thead>
             <tbody>
             <tr th:each="leaveApplication : ${leaveApplications}">
-                <td th:text="${leaveApplication.leaveType}"></td>
+                <td th:text="${leaveApplication.leaveType.name}"></td>
                 <td th:text="${leaveApplication.start_date}"></td>
                 <td th:text="${leaveApplication.end_date}"></td>
                 <td th:text="${leaveApplication.reason}"></td>

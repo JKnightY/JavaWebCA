@@ -2,26 +2,16 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Edit Leave Application</title>
+    <title>Edit CompensationLeave Application</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
 <body>
 <div class="container">
-    <h1 class="mt-5">Edit Leave Application</h1>
-    <form th:action="@{/staff/leaveApplication/edit/{id}(id=${leaveApplication.id})}" th:object="${leaveApplication}" method="post" class="mt-3">
+    <h1 class="mt-5">Edit CompensationLeave Application</h1>
+    <form th:action="@{/staff/compensationLeave/edit/{id}(id=${compensationLeave.id})}" th:object="${compensationLeave}" method="post" class="mt-3">
         <div class="form-group">
-            <label for="leaveType">Leave Type:</label>
-            <select id="leaveType" th:field="*{leaveType.id}" name="leaveType" class="form-control">
-                <option th:each="leaveType : ${leaveTypes}" th:value="${leaveType.id}" th:text="${leaveType.name}"></option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="startDate">Start Date:</label>
-            <input type="date" id="startDate" th:field="*{start_date}" name="start_date" class="form-control">
-        </div>
-        <div class="form-group">
-            <label for="endDate">End Date:</label>
-            <input type="date" id="endDate" th:field="*{end_date}" name="end_date" class="form-control">
+            <label for="claimDate">Claim Date:</label>
+            <input type="date" id="claimDate" th:field="*{claim_date}" name="claim_date" class="form-control">
         </div>
         <div class="form-group">
             <label for="reason">Reason:</label>
