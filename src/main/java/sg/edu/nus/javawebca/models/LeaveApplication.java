@@ -19,7 +19,7 @@ public class LeaveApplication {
     private LeaveHistory leaveHistory;
 
     @ManyToOne
-    @JoinColumn(name = "leave_type_id", referencedColumnName = "id")
+    @JoinColumn(name = "leave_type_id")
     private LeaveType leaveType;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
