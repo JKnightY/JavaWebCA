@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>CompensationLeave Applications</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <nav class="sidebar">
+        <h2>Menu</h2>
+        <ul>
+            <li><a th:href="@{/staff/leaveApplication/history}">Manage LeaveApplication</a></li>
+            <li><a th:href="@{/staff/compensationLeave/history}">Manage claimCompensation</a></li>
+        </ul>
+    </nav>
+    <h1 class="mt-5">Your CompensationLeave Applications</h1>
+
+    <a href="/staff/apply-comLeave" class="btn btn-primary">Create CompensationLeave Application</a>
+    <div th:if="${compensationLeaves.isEmpty()}">
+        <h3>You have not submitted any compensationLeave applications yet.</h3>
+    </div>
+
+    <div th:if="${!compensationLeaves.isEmpty()}">
+        <table class="table mt-3">
+            <thead>
+            <tr>
+                <th>Claim Date</th>
+                <th>Reason</th>
+                <th>Work Dissemination</th>
+                <th>Contact Details</th>
+                <th>Status</th>
+                <th>Actions</th> <!-- 添加一个新的表头用于操作 -->
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="compensationLeave : ${compensationLeaves}">
+                <td th:text="${compensationLeave.claim_date}"></td>
+                <td th:text="${compensationLeave.reason}"></td>
+                <td th:text="${compensationLeave.work_dissemination}"></td>
+                <td th:text="${compensationLeave.contact_details}"></td>
+                <td th:text="${compensationLeave.status}"></td>
+                <td>
+                    <div th:if="${#strings.equals(compensationLeave.status.name(), 'APPLIED')  or #strings.equals(compensationLeave.status.name(),'UPDATED')}">
+                        <a th:href="@{'/staff/compensationLeave/edit/' + ${compensationLeave.id}}">Update</a> |
+                        <a th:href="@{'/staff/compensationLeave/delete/' + ${compensationLeave.id}}">Delete</a>
+                    </div>
+                    <div th:if="${#strings.equals(compensationLeave.status.name(), 'APPROVED')}">
+                        <a th:href="@{'/staff/compensationLeave/cancel/' + ${compensationLeave.id}}">Cancel</a>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
