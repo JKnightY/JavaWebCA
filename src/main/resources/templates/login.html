@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/layout.html :: html_head"/>
+<body>
+  <div th:replace="fragments/layout.html :: menu"/>
+  <div th:replace="fragments/layout.html :: header"/>
+  <h3>Login</h3> 
+  <form action="#" th:object="${user}" th:action="@{'/home/authenticate'}" method="post">
+    <table class="framed">
+      <tr>
+        <td><span th:text="#{fieldLabel.username}">Username</span></td>
+        <td><input type="text" th:field="*{name}"></td>
+        <td><span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" /><td>
+      </tr>
+      <tr>
+        <td><span th:text="#{fieldLabel.password}">Password</span></td>
+        <td><input type="password" th:field="*{password}"></td>
+        <td><span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>
+          <input type="submit" />
+          <input type="reset" />
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td colspan="2">
+          <span th:if="${loginMessage != null}" th:text="${loginMessage}"></span>
+        </td>
+      </tr>
+    </table>
+  </form>
+  </div>
+</body>
+
+</html>
