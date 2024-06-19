@@ -10,31 +10,25 @@ public class CompensationLeave {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private LocalDate claim_date;
-    private double hours_worked;
-    @Column(name = "status", columnDefinition = "ENUM('APPLIED', 'APPROVED', 'REJECTED', 'CANCEL', 'UPDATED', 'DELETED')")
-    @Enumerated(EnumType.STRING)
-    private LeaveApplicationStatusEnum status;//（1:applied、2:approved、3:rejected ...)
+
     @ManyToOne
     private User approved_by;
 
-    @ManyToOne
-    private CompensationLeaveHistory CompensationLeaveHistory;
+    @Column(name = "status", columnDefinition = "ENUM('APPLIED', 'APPROVED', 'REJECTED', 'CANCEL', 'UPDATED', 'DELETED')")
+    @Enumerated(EnumType.STRING)
+    private LeaveApplicationStatusEnum status;//（1:applied、2:approved、3:rejected ...)
+
+
+    private LocalDate claim_date;
+    private double hours_worked;
     private LocalDateTime create_at;
     private LocalDateTime update_at;
     private String reason;
     private String contact_details;
     private String work_dissemination;
     private String claim_period; // "MORNING", "AFTERNOON", "FULL_DAY"
+
     public CompensationLeave() {
-    }
-
-    public sg.edu.nus.javawebca.models.CompensationLeaveHistory getCompensationLeaveHistory() {
-        return CompensationLeaveHistory;
-    }
-
-    public void setCompensationLeaveHistory(sg.edu.nus.javawebca.models.CompensationLeaveHistory compensationLeaveHistory) {
-        CompensationLeaveHistory = compensationLeaveHistory;
     }
 
     public LeaveApplicationStatusEnum getStatus() {
