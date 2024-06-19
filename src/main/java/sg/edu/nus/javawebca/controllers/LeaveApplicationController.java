@@ -1,6 +1,7 @@
 package sg.edu.nus.javawebca.controllers;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -60,7 +61,7 @@ public class LeaveApplicationController {
     }
 
     @PostMapping("/apply-leave")
-    public String createApplyLeave(@ModelAttribute("leaveApplication") LeaveApplication inleaveApplication, BindingResult result, Model model) {
+    public String createApplyLeave(@ModelAttribute @Valid LeaveApplication inleaveApplication, BindingResult result, Model model) {
         if (result.hasErrors()) {
             // 即使 leaveTypes 不为空，我们仍然需要在有错误时重新加载它们，以便返回表单页面时显示
             List<LeaveType> leaveTypes = leaveTypeService.findAllLeaveTypes();
@@ -89,7 +90,7 @@ public class LeaveApplicationController {
     }
 
     @PostMapping("/leaveApplication/edit/{id}")
-    public String editLeave(@ModelAttribute LeaveApplication leaveApplication, BindingResult result, @PathVariable Integer id, Model model) {
+    public String editLeave(@ModelAttribute @Valid LeaveApplication leaveApplication, BindingResult result, @PathVariable Integer id, Model model) {
         if (result.hasErrors()) {
             List<LeaveType> leaveTypes = leaveTypeService.findAllLeaveTypes();
             model.addAttribute("leaveTypes", leaveTypes);
