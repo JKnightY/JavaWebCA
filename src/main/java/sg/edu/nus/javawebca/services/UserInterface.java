@@ -10,5 +10,5 @@ public interface UserInterface {
 	  User createUser(User user);
 	  User changeUser(User user);
 	  void removeUser(User user);
-	  User authenticate(String username, String pwd);
+	  User authenticate(String account, String pwd);
 }

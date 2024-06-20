@@ -46,7 +46,7 @@ public class UserInterfaceImpl implements UserInterface {
   }
   @Transactional
   @Override
-  public User authenticate(String username, String pwd) {
-    return userRepository.findUserByNamePwd(username, pwd);
+  public User authenticate(String account, String pwd) {
+    return userRepository.findUserByNamePwd(account, pwd);
   }
 }
