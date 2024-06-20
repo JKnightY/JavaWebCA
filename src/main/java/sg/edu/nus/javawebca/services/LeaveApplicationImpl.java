@@ -21,6 +21,9 @@ public class LeaveApplicationImpl implements LeaveApplicationInterface {
     @Autowired
     private LeaveApplicationRepository leaveApplicationRepository;
 
+    @Autowired
+    private PublicHolidayService publicHolidayService;
+
     @Override
     @Transactional
     public List<LeaveApplication> findAllLeaveApplications() {
@@ -71,9 +74,19 @@ public class LeaveApplicationImpl implements LeaveApplicationInterface {
         }
     }
 
-    private boolean isNonWorkingDay(LocalDate date) {
+    public boolean isNonWorkingDay(LocalDate date) {
         DayOfWeek dayOfWeek = date.getDayOfWeek();
-        return dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY;
+        if (dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) {
+            return true;
+        }
+        // 检查是否为公共假日
+        List<PublicHoliday> publicHolidays = publicHolidayService.getAllPublicHolidays();
+        for (PublicHoliday holiday : publicHolidays) {
+            if (holiday.getHoliday_date().equals(date)) {
+                return true;
+            }
+        }
+        return false;
     }
 
    public long calculateTotalDays(LocalDate start, LocalDate end) {
