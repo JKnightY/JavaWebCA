@@ -1,28 +1,22 @@
-// src/components/LeaveApplicationItem.js
 import React from 'react';
 
 const LeaveApplicationItem = ({ application, onUpdateStatus }) => {
-    const { id, employeeId, leaveType, start_date, end_date, reason, status } = application;
-
-    const handleApprove = () => {
-        onUpdateStatus(id, 1); // 1表示批准
-    };
-
-    const handleReject = () => {
-        onUpdateStatus(id, 2); // 2表示拒绝
+    const handleStatusChange = (newStatus) => {
+        onUpdateStatus(application.id, newStatus);
     };
 
     return (
         <tr>
-            <td>{employeeId}</td>
-            <td>{leaveType}</td>
-            <td>{new Date(start_date).toLocaleDateString()}</td>
-            <td>{new Date(end_date).toLocaleDateString()}</td>
-            <td>{reason}</td>
-            <td>{status === 0 ? 'Pending' : status === 1 ? 'Approved' : 'Rejected'}</td>
+            <td>{application.id}</td>
+            <td>{application.user ? application.user.username : '未知'}</td>
+            <td>{application.leaveType ? application.leaveType.name : '未知'}</td>
+            <td>{application.start_date}</td>
+            <td>{application.end_date}</td>
+            <td>{application.reason}</td>
+            <td>{application.status}</td>
             <td>
-                <button onClick={handleApprove}>Approve</button>
-                <button onClick={handleReject}>Reject</button>
+                <button onClick={() => handleStatusChange('APPROVED')}>Approve</button>
+                <button onClick={() => handleStatusChange('REJECTED')}>Reject</button>
             </td>
         </tr>
     );
