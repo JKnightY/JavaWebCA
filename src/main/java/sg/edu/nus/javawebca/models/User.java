@@ -17,6 +17,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     @NotNull(message = "account must be provided")
     private String account;
     private String password;
@@ -31,6 +32,14 @@ public class User {
     private int medical_leave_entitlement_last;
     private int compensation_leave_balance;
     private int compensation_leave_balance_last;
+    @OneToMany(mappedBy = "user")
+    private List<LeaveApplication> leaveApplications;
+
+    @OneToMany(mappedBy = "approved_by")
+    private List<CompensationLeave> approvedLeaves;
+
+    public User() {
+    }
 
     public int getAnnual_leave_entitlement_last() {
         return annual_leave_entitlement_last;
@@ -71,16 +80,6 @@ public class User {
     public void setApprovedLeaves(List<CompensationLeave> approvedLeaves) {
         this.approvedLeaves = approvedLeaves;
     }
-
-
-
-    @OneToMany(mappedBy = "user")
-    private List<LeaveApplication> leaveApplications;
-
-    @OneToMany(mappedBy = "approved_by")
-    private List<CompensationLeave> approvedLeaves;
-
-    public User(){}
 
     public Integer getId() {
         return id;

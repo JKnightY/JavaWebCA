@@ -16,10 +16,6 @@ public class LeaveApplication {
     private User user;
 
     @ManyToOne
-    private LeaveHistory leaveHistory;
-
-    @ManyToOne
-    @JoinColumn(name = "leave_type_id")
     private LeaveType leaveType;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -28,14 +24,16 @@ public class LeaveApplication {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate end_date;
 
-    private String reason;
-    private String work_dissemination;
-    private String contact_details;
     @Column(name = "status", columnDefinition = "ENUM('APPLIED', 'APPROVED', 'REJECTED', 'CANCEL', 'UPDATED', 'DELETED')")
     @Enumerated(EnumType.STRING)
     private LeaveApplicationStatusEnum status; //（1:applied、2:approved、3:rejected、4:cancel、5:updated、6:deleted）
+
+    private String reason;
+    private String work_dissemination;
+    private String contact_details;
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
+
     public LeaveApplication() {
     }
 
@@ -69,14 +67,6 @@ public class LeaveApplication {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public LeaveHistory getLeaveHistory() {
-        return leaveHistory;
-    }
-
-    public void setLeaveHistory(LeaveHistory leaveHistory) {
-        this.leaveHistory = leaveHistory;
     }
 
     public LeaveType getLeaveType() {
