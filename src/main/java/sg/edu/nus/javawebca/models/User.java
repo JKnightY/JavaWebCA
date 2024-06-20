@@ -24,7 +24,7 @@ public class User {
     @NotNull(message = "username must be provided")
     private String username;
     @NotNull(message = "role type must be provided")
-    private Integer role = 1;//"0" = "admin" "1" = "staff" "2" = "manager"
+    private Integer role;//"0" = "admin" "1" = "staff" "2" = "manager"
     private String email;
     private int annual_leave_entitlement;
     private int annual_leave_entitlement_last;
