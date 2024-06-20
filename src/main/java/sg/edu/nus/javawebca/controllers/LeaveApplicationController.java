@@ -75,6 +75,11 @@ public class LeaveApplicationController {
         inleaveApplication.setLeaveType(leaveTypeOptional.get());
         inleaveApplication.setStatus(LeaveApplicationStatusEnum.APPLIED);
         inleaveApplication.setCreated_at(LocalDateTime.now());
+        inleaveApplication.setUpdated_at(LocalDateTime.now());
+        //String leavetypename = leaveTypeOptional.get().getName();
+        //LeaveType leaveType = leaveTypeOptional.get();
+        //System.out.println(leaveType);
+        //inleaveApplication.setLeaveType(leaveType);
         leaveApplicationinterface.createApplyLeave(inleaveApplication);
         return "redirect:/staff/leaveApplication/history"; // Redirect to leave application list
     }

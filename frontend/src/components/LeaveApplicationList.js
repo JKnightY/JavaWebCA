@@ -1,4 +1,3 @@
-// src/components/LeaveApplicationList.js
 import React from 'react';
 import LeaveApplicationItem from './LeaveApplicationItem';
 
@@ -7,17 +6,18 @@ const LeaveApplicationList = ({ applications, onUpdateStatus }) => {
         <table>
             <thead>
             <tr>
-                <th>Employee ID</th>
+                <th>ID</th>
+                <th>User</th>
                 <th>Leave Type</th>
-                <th>From</th>
-                <th>To</th>
+                <th>Start Date</th>
+                <th>End Date</th>
                 <th>Reason</th>
                 <th>Status</th>
                 <th>Actions</th>
             </tr>
             </thead>
             <tbody>
-            {applications.map((application) => (
+            {applications.map(application => (
                 <LeaveApplicationItem
                     key={application.id}
                     application={application}

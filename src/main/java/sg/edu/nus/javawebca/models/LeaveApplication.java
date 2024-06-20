@@ -1,5 +1,6 @@
 package sg.edu.nus.javawebca.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -53,6 +54,7 @@ public class LeaveApplication {
         this.work_dissemination = work_dissemination;
     }
 
+    @JsonIgnore
     public User getUser() {
         return user;
     }
