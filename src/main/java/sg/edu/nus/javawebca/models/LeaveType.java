@@ -2,7 +2,6 @@ package sg.edu.nus.javawebca.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-
 import java.util.List;
 
 @Entity

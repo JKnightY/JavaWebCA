@@ -35,7 +35,7 @@ public class LoginController {
       return "login";
     } 
     
-    User u = userInterface.authenticate(user.getUsername(), user.getPassword());
+    User u = userInterface.authenticate(user.getAccount(), user.getPassword());
     
     if (u == null) {
       model.addAttribute("loginMessage", "Incorrect username/password");

@@ -5,14 +5,14 @@
   <form action="#" th:object="${user}" th:action="@{'/home/authenticate'}" method="post">
     <table class="framed">
       <tr>
-        <td><span th:text="Username">Username</span></td>
-        <td><input type="text" th:field="*{username}"></td>
-        <td><span th:if="${#fields.hasErrors('username')}" th:errors="*{username}" /><td>
+        <td><span th:text="Account">Account</span></td>
+        <td><input type="text" th:field="*{account}"></td>
+        <td><span th:if="${#fields.hasErrors('account')}" th:errors="*{account}" /><td>
       </tr>
       <tr>
         <td><span th:text="Password">Password</span></td>
         <td><input type="password" th:field="*{password}"></td>
-        <td><span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></td>
+        <td><span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"/></td>
       </tr>
       <tr>
         <td></td>
