@@ -7,48 +7,53 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import sg.edu.nus.javawebca.models.User;
 import sg.edu.nus.javawebca.services.UserInterface;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Controller
 public class LoginController {
+  private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
+
   @Autowired
   private UserInterface userInterface;
-  
+
   @GetMapping(value = {"/", "/login", "/home"})
   public String login(Model model) {
     model.addAttribute("user", new User());
-    
     return "login";
   }
-  
-  @RequestMapping(value = "/home/authenticate")
-  public String authenticate(@ModelAttribute("user") @Valid User user, BindingResult bindingResult, Model model,
-      HttpSession session) {
+
+  @PostMapping("/home/authenticate")
+  public String authenticate(@ModelAttribute("user") @Valid User user, BindingResult bindingResult, Model model, HttpSession session) {
     if (bindingResult.hasErrors()) {
       return "login";
-    } 
-    
-    User u = userInterface.authenticate(user.getAccount(), user.getPassword());
-    
-    if (u == null) {
+    }
+
+    logger.debug("Account: {}", user.getAccount());
+    logger.debug("Password: {}", user.getPassword());
+
+    User authenticatedUser = userInterface.authenticate(user.getAccount(), user.getPassword());
+
+    if (authenticatedUser == null) {
       model.addAttribute("loginMessage", "Incorrect username/password");
       return "login";
     }
-    else if (u.getRole()==0) {
+
+    session.setAttribute("loggedInUser", authenticatedUser); // 保存用户信息到会话中
+
+    if (authenticatedUser.getRole() == 0) {
       return "redirect:/Admin/users";
     }
-    
+
     return "redirect:/staff/leaveApplication/history";
   }
-  
-  @RequestMapping(value = "/logout")
+
+  @GetMapping("/logout")
   public String logout(HttpSession session) {
     session.invalidate();
     return "redirect:/login";
