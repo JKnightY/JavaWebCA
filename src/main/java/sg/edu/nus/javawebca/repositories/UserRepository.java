@@ -7,6 +7,6 @@ import org.springframework.data.repository.query.Param;
 import sg.edu.nus.javawebca.models.User;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
-	  @Query("SELECT u FROM User u WHERE u.username=:username AND u.password=:pwd")
-	  User findUserByNamePwd(@Param("username")String username, @Param("pwd")String pwd);
+	@Query("SELECT u FROM User u WHERE u.username=:username AND u.password=:pwd")
+	User findUserByNamePwd(@Param("username") String username, @Param("pwd") String pwd);
 }
