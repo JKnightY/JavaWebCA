@@ -55,6 +55,19 @@ public class LeaveApplicationValidator implements Validator {
             }
         }
 
+        // 检查开始日期和结束日期是否为工作日
+        if (leaveApplication.getStart_date() != null) {
+            if (leaveApplicationService.isNonWorkingDay(leaveApplication.getStart_date())) {
+                errors.rejectValue("start_date", "start_date.invalid", "Start date must be a working day.");
+            }
+        }
+
+        if (leaveApplication.getEnd_date() != null) {
+            if (leaveApplicationService.isNonWorkingDay(leaveApplication.getEnd_date())) {
+                errors.rejectValue("end_date", "end_date.invalid", "End date must be a working day.");
+            }
+        }
+
         if (leaveApplication.getLeaveType() != null && leaveApplication.getStart_date() != null && leaveApplication.getEnd_date() != null) {
             User user = leaveApplication.getUser();
             long requestedDays = leaveApplicationService.calculateTotalDays(leaveApplication.getStart_date(), leaveApplication.getEnd_date());
@@ -73,10 +86,7 @@ public class LeaveApplicationValidator implements Validator {
                 } else if (requestedDays > user.getMedical_leave_entitlement_last()) {
                     errors.rejectValue("leaveType", "leaveType.insufficient", "Insufficient medical leave balance.");
                 }
-            } else if (leaveApplication.getLeaveType().getName() == "CompensationLeave") {
-                if (requestedDays > user.getCompensation_leave_balance_last()) {
-                    errors.rejectValue("leaveType", "leaveType.insufficient", "Insufficient compensation leave balance.");
-                }
+
             }
         }
     }
