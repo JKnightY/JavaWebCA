@@ -35,7 +35,7 @@ public class LoginController {
       return "login";
     } 
     
-    User u = userInterface.authenticate(user.getUsername(), user.getPassword());
+    User u = userInterface.authenticate(user.getAccount(), user.getPassword());
     
     if (u == null) {
       model.addAttribute("loginMessage", "Incorrect username/password");
@@ -44,7 +44,7 @@ public class LoginController {
     else if (u.getRole()==0) {
       return "redirect:/Admin/users";
     }
-    
+    //manager 加个判断
     return "redirect:/staff/leaveApplication/history";
   }
   
