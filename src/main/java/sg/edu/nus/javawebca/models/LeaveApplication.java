@@ -1,10 +1,13 @@
 package sg.edu.nus.javawebca.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.FutureOrPresent;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 public class LeaveApplication {
@@ -31,7 +34,11 @@ public class LeaveApplication {
     private String reason;
     private String work_dissemination;
     private String contact_details;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime created_at;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updated_at;
 
     public LeaveApplication() {
@@ -124,4 +131,5 @@ public class LeaveApplication {
     public void setUpdated_at(LocalDateTime updated_at) {
         this.updated_at = updated_at;
     }
+
 }

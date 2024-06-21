@@ -68,6 +68,9 @@ public class LeaveApplicationController {
 
     @PostMapping("/apply-leave")
     public String createApplyLeave(@ModelAttribute @Valid LeaveApplication inleaveApplication, BindingResult result, Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        inleaveApplication.setUser(user);
+
         if (result.hasErrors()) {
             // 即使 leaveTypes 不为空，我们仍然需要在有错误时重新加载它们，以便返回表单页面时显示
             List<LeaveType> leaveTypes = leaveTypeService.findAllLeaveTypes();
@@ -75,9 +78,7 @@ public class LeaveApplicationController {
             return "apply-leave"; // Return to form if there are errors
         }
 
-        User user = (User) session.getAttribute("user");
 
-        inleaveApplication.setUser(user);
         Optional<LeaveType> leaveTypeOptional = leaveTypeService.findLeaveTypeById(inleaveApplication.getLeaveType().getId());
 
         inleaveApplication.setLeaveType(leaveTypeOptional.get());
@@ -107,9 +108,11 @@ public class LeaveApplicationController {
         User user = (User) session.getAttribute("user");
         leaveApplication.setUser(user);
         Optional<LeaveType> leaveTypeOptional = leaveTypeService.findLeaveTypeById(leaveApplication.getLeaveType().getId());
+        //  保留create time
+        LeaveApplication existingLeaveApplication = leaveApplicationinterface.findLeaveApplicationById(id);
+        leaveApplication.setCreated_at(existingLeaveApplication.getCreated_at());
 
         leaveApplication.setLeaveType(leaveTypeOptional.get());
-
         leaveApplication.setStatus(LeaveApplicationStatusEnum.UPDATED);
         leaveApplication.setUpdated_at(LocalDateTime.now());
         leaveApplicationinterface.updateLeaveApplication(leaveApplication);

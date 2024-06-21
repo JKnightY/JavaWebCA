@@ -4,7 +4,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import sg.edu.nus.javawebca.models.LeaveApplication;
+import sg.edu.nus.javawebca.models.User;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface LeaveApplicationRepository extends JpaRepository<LeaveApplication, Integer> {
@@ -15,4 +17,5 @@ public interface LeaveApplicationRepository extends JpaRepository<LeaveApplicati
     LeaveApplication findLeaveApplicationsById(@Param("keyword") int keyword);
 
     List<LeaveApplication> findLeaveApplicationsByUserId(int userId);
+
 }
