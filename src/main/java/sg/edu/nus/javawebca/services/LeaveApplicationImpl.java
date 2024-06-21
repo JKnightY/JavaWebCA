@@ -32,6 +32,12 @@ public class LeaveApplicationImpl implements LeaveApplicationInterface {
 
     @Override
     @Transactional
+    public List<LeaveApplication> findLeaveApplicationsByUserId(int userId){
+        return leaveApplicationRepository.findLeaveApplicationsByUserId(userId);
+    }
+
+    @Override
+    @Transactional
     public LeaveApplication createApplyLeave(LeaveApplication leaveApplication) {
         return leaveApplicationRepository.save(leaveApplication);
     }

@@ -13,4 +13,6 @@ public interface LeaveApplicationRepository extends JpaRepository<LeaveApplicati
 
     @Query("SELECT l FROM LeaveApplication l WHERE l.id = :keyword")
     LeaveApplication findLeaveApplicationsById(@Param("keyword") int keyword);
+
+    List<LeaveApplication> findLeaveApplicationsByUserId(int userId);
 }

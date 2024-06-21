@@ -7,6 +7,8 @@ import java.util.List;
 public interface LeaveApplicationInterface {
     List<LeaveApplication> findAllLeaveApplications();
 
+    List<LeaveApplication> findLeaveApplicationsByUserId(int userId);
+
     LeaveApplication createApplyLeave(LeaveApplication leaveApplication);
 
     LeaveApplication updateLeaveApplication(LeaveApplication leaveApplication);

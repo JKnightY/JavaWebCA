@@ -44,6 +44,8 @@
                 <td th:text="${leaveApplication.work_dissemination}"></td>
                 <td th:text="${leaveApplication.contact_details}"></td>
                 <td th:text="${leaveApplication.status}"></td>
+                <td th:text="${leaveApplication.created_at}"></td>
+                <td th:text="${leaveApplication.updated_at}"></td>
                 <td>
                     <div th:if="${#strings.equals(leaveApplication.status, 'APPLIED')  or #strings.equals(leaveApplication.status,'UPDATED')}">
                         <a th:href="@{/staff/leaveApplication/edit/}+${leaveApplication.id}">Update</a> |

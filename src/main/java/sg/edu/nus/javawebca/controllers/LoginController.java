@@ -40,12 +40,21 @@ public class LoginController {
     if (u == null) {
       model.addAttribute("loginMessage", "Incorrect username/password");
       return "login";
+    } else {
+      session.setAttribute("user", u);
+
+      if (u.getRole() == 0) {
+        return "redirect:/Admin/users";
+      } else if (u.getRole() == 1) {
+        return "redirect:/staff/leaveApplication/history";
+      } else if (u.getRole() == 2) {
+        return "redirect:http://localhost:8080/manager/status/";
+      } else {
+        model.addAttribute("loginMessage", "Unauthorized access");
+        return "login";
+      }
     }
-    else if (u.getRole()==0) {
-      return "redirect:/Admin/users";
-    }
-    
-    return "redirect:/staff/leaveApplication/history";
+
   }
   
   @RequestMapping(value = "/logout")
