@@ -50,7 +50,7 @@ public class LeaveApplicationController {
         if (user == null) {
             return "redirect:/login"; // 如果没有找到用户，则重定向到登录页面
         }
-
+        model.addAttribute("username", user.getUsername());
         List<LeaveApplication> leaveApplications = leaveApplicationinterface.findLeaveApplicationsByUserId(user.getId());
         model.addAttribute("leaveApplications", leaveApplications);
         List<LeaveType> leaveTypes = leaveTypeService.findAllLeaveTypes();
