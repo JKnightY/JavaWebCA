@@ -26,6 +26,7 @@ public class User {
     //@NotNull(message = "role type must be provided")
     private Integer role;//"0" = "admin" "1" = "staff" "2" = "manager"
     private String email;
+    private Integer hierarchy;
     private int annual_leave_entitlement;
     private int annual_leave_entitlement_last;
     private int medical_leave_entitlement;
@@ -151,5 +152,13 @@ public class User {
 
     public void setCompensation_leave_balance(int compensation_leave_balance) {
         this.compensation_leave_balance = compensation_leave_balance;
+    }
+
+    public Integer getHierarchy() {
+        return hierarchy;
+    }
+
+    public void setHierarchy(Integer hierarchy) {
+        this.hierarchy = hierarchy;
     }
 }

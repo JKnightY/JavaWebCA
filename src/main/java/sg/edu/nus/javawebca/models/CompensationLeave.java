@@ -1,11 +1,14 @@
 package sg.edu.nus.javawebca.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class CompensationLeave {
@@ -13,8 +16,10 @@ public class CompensationLeave {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @NotNull(message = "Start date is required")
+    @FutureOrPresent(message = "Start date must be today or in the future")
     private LocalDate startDate;
     @NotNull(message = "End date is required")
+    @FutureOrPresent(message = "Start date must be today or in the future")
     private LocalDate endDate;
     @NotNull(message = "Start period is required")
     private String startPeriod;  // "MORNING", "AFTERNOON", "FULL_DAY"
@@ -29,8 +34,8 @@ public class CompensationLeave {
     @ManyToOne
     private User approved_by;
 
-    @ManyToOne
-    private CompensationLeaveHistory CompensationLeaveHistory;
+    @OneToMany(mappedBy = "compensationLeave", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CompensationLeaveHistory> histories = new ArrayList<>();
     private LocalDateTime create_at;
     private LocalDateTime update_at;
     private String reason;
@@ -38,14 +43,6 @@ public class CompensationLeave {
     private String work_dissemination;
 
     public CompensationLeave() {
-    }
-
-    public sg.edu.nus.javawebca.models.CompensationLeaveHistory getCompensationLeaveHistory() {
-        return CompensationLeaveHistory;
-    }
-
-    public void setCompensationLeaveHistory(sg.edu.nus.javawebca.models.CompensationLeaveHistory compensationLeaveHistory) {
-        CompensationLeaveHistory = compensationLeaveHistory;
     }
 
     public LeaveApplicationStatusEnum getStatus() {
@@ -153,6 +150,14 @@ public class CompensationLeave {
 
     public void setEndPeriod(String endPeriod) {
         this.endPeriod = endPeriod;
+    }
+
+    public List<CompensationLeaveHistory> getHistories() {
+        return histories;
+    }
+
+    public void setHistories(List<CompensationLeaveHistory> histories) {
+        this.histories = histories;
     }
 }
 

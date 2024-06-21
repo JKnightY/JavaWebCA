@@ -82,6 +82,7 @@
                 <td th:text="${user.password}"></td>
                 <td th:text="${user.username}"></td>
                 <td th:text="${user.role == 0 ? 'Admin' : (user.role == 1 ? 'Staff' : (user.role == 2 ? 'Manager' : ''))}"></td>
+                <td th:text="${user.hierarchy} == 0 ? '0' : (user.role == 1 ? '1' : '2')"></td>
                 <td th:text="${user.email}"></td>
                 <td class="actions">
                     <a th:href="@{/Admin/users/update/{id}(id=${user.id})}" class="btn btn-primary">Update</a>

@@ -85,6 +85,16 @@
         <p th:if="${#fields.hasErrors('role')}" th:errors="*{role}">Role Error</p>
     </fieldset>
     <fieldset>
+        <label for="hierarchy">Hierarchy:</label>
+        <select id="hierarchy" th:field="*{hierarchy}">
+            <option value="" disabled selected>Select Hierarchy</option>
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+        </select>
+        <p th:if="${#fields.hasErrors('hierarchy')}" th:errors="*{hierarchy}">Hierarchy Error</p>
+    </fieldset>
+    <fieldset>
         <label for="email">Email:</label>
         <input type="email" id="email" th:field="*{email}">
         <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</p>

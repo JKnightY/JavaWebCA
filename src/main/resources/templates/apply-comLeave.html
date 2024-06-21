@@ -14,6 +14,7 @@
             <input type="number" id="hoursWorked" th:field="*{hours_worked}" name="hoursWorked" class="form-control" required>
             <div th:if="${#fields.hasErrors('hours_worked')}" th:errors="*{hours_worked}" class="text-danger"></div>
         </div>
+<!--        <p id="error-message1" style="color: red;"></p>-->
         <p id="compensationResult"></p>
         <div class="form-group">
             <label for="startDate">Start Date:</label>
@@ -41,6 +42,7 @@
                 <option value="FULL_DAY">FULL_DAY</option>
             </select>
         </div>
+<!--        <p id="error-message2" style="color: red;"></p>-->
         <div class="form-group">
             <label for="reason">Reason:</label>
             <textarea id="reason" th:field="*{reason}" class="form-control"></textarea>
@@ -57,7 +59,6 @@
             <div th:if="${#fields.hasErrors('contact_details')}" th:errors="*{contact_details}" class="text-danger"></div>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
-        <p id="error-message" style="color: red;"></p>
     </form>
 </div>
 <script>
@@ -72,24 +73,24 @@
         return Math.floor(hours / 4) / 2;  // 每4小时加班获得半天假期
     }
 
-    document.getElementById('leave-application-form').addEventListener('submit', function(event) {
-        const hoursWorked = document.getElementById('hoursWorked').value;
-        if (hoursWorked < 0) {
-            event.preventDefault();
-            document.getElementById('error-message').innerText = 'Hours worked cannot be negative.';
-        }
-
-        const startDate = new Date(document.getElementById('startDate').value);
-        const startPeriod = document.getElementById('startPeriod').value;
-        const endDate = new Date(document.getElementById('endDate').value);
-        const endPeriod = document.getElementById('endPeriod').value;
-
-        // Front-end validation
-        if (endDate < startDate || (endDate.getTime() === startDate.getTime() && endPeriod === 'MORNING' && startPeriod === 'AFTERNOON')) {
-            event.preventDefault();
-            document.getElementById('error-message').innerText = 'End date and time cannot be earlier than start date and time.';
-        }
-    });
+    // document.getElementById('leave-application-form').addEventListener('submit', function(event) {
+    //     // const hoursWorked = document.getElementById('hoursWorked').value;
+    //     // if (hoursWorked < 0) {
+    //     //     event.preventDefault();
+    //     //     document.getElementById('error-message1').innerText = 'Hours worked cannot be negative.';
+    //     // }
+    //
+    //     const startDate = new Date(document.getElementById('startDate').value);
+    //     const startPeriod = document.getElementById('startPeriod').value;
+    //     const endDate = new Date(document.getElementById('endDate').value);
+    //     const endPeriod = document.getElementById('endPeriod').value;
+    //
+    //     // Front-end validation
+    //     // if (endDate < startDate || (endDate.getTime() === startDate.getTime() && endPeriod === 'MORNING' && startPeriod === 'AFTERNOON')) {
+    //     //     event.preventDefault();
+    //     //     document.getElementById('error-message2').innerText = 'End date and time cannot be earlier than start date and time.';
+    //     }
+    // });
 </script>
 </body>
 </html>

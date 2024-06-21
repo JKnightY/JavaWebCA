@@ -5,32 +5,70 @@
     <title>Edit CompensationLeave Application</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
-<body>
 <div class="container">
-    <h1 class="mt-5">Edit CompensationLeave Application</h1>
-    <form th:action="@{/staff/compensationLeave/edit/{id}(id=${compensationLeave.id})}" th:object="${compensationLeave}" method="post" class="mt-3">
+    <h1 class="mt-5">Update CompensationLeave Application</h1>
+    <form id="leave-application-form" action="/staff/apply-comLeave" th:object="${compensationLeave}" method="post" class="mt-3">
+        <div id="compensation-form">
+            <label for="hoursWorked">Hours Worked:</label>
+            <input type="number" id="hoursWorked" th:field="*{hours_worked}" name="hoursWorked" class="form-control" required>
+            <div th:if="${#fields.hasErrors('hours_worked')}" th:errors="*{hours_worked}" class="text-danger"></div>
+        </div>
+        <p id="compensationResult"></p>
         <div class="form-group">
-            <label for="claimDate">Claim Date:</label>
-            <input type="date" id="claimDate" th:field="*{claim_date}" name="claim_date" class="form-control">
-            <div th:if="${#fields.hasErrors('claim_date')}" th:errors="*{claim_date}" class="text-danger"></div>
+            <label for="startDate">Start Date:</label>
+            <input type="date" id="startDate" th:field="*{startDate}" class="form-control" required>
+            <div th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}" class="text-danger"></div>
+        </div>
+        <div class="form-group">
+            <label for="startPeriod">Start Period:</label>
+            <select id="startPeriod" th:field="*{startPeriod}" class="form-control" required>
+                <option value="MORNING">MORNING</option>
+                <option value="AFTERNOON">AFTERNOON</option>
+                <option value="FULL_DAY">FULL_DAY</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="endDate">End Date:</label>
+            <input type="date" id="endDate" th:field="*{endDate}" class="form-control" required>
+            <div th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}" class="text-danger"></div>
+        </div>
+        <div class="form-group">
+            <label for="endPeriod">End Period:</label>
+            <select id="endPeriod" th:field="*{endPeriod}" class="form-control" required>
+                <option value="MORNING">MORNING</option>
+                <option value="AFTERNOON">AFTERNOON</option>
+                <option value="FULL_DAY">FULL_DAY</option>
+            </select>
         </div>
         <div class="form-group">
             <label for="reason">Reason:</label>
-            <textarea id="reason" th:field="*{reason}" name="reason" class="form-control"></textarea>
+            <textarea id="reason" th:field="*{reason}" class="form-control"></textarea>
             <div th:if="${#fields.hasErrors('reason')}" th:errors="*{reason}" class="text-danger"></div>
         </div>
         <div class="form-group">
             <label for="workDissemination">Work Dissemination:</label>
-            <textarea id="workDissemination" th:field="*{work_dissemination}" name="work_dissemination" class="form-control"></textarea>
+            <textarea id="workDissemination" th:field="*{work_dissemination}" class="form-control"></textarea>
             <div th:if="${#fields.hasErrors('work_dissemination')}" th:errors="*{work_dissemination}" class="text-danger"></div>
         </div>
         <div class="form-group">
             <label for="contactDetails">Contact Details (if on an overseas trip):</label>
-            <textarea id="contactDetails" th:field="*{contact_details}" name="contact_details" class="form-control"></textarea>
+            <textarea id="contactDetails" th:field="*{contact_details}" class="form-control"></textarea>
             <div th:if="${#fields.hasErrors('contact_details')}" th:errors="*{contact_details}" class="text-danger"></div>
         </div>
         <button type="submit" class="btn btn-primary">Update</button>
     </form>
 </div>
+<script>
+    document.getElementById('hoursWorked').addEventListener('input', function() {
+        const hoursWorked = document.getElementById('hoursWorked').value;
+        const compensationDays = calculateCompensationDays(hoursWorked);
+        document.getElementById('compensationResult').innerText = `You can claim ${compensationDays} days of leave.`;
+
+    });
+
+    function calculateCompensationDays(hours) {
+        return Math.floor(hours / 4) / 2;  // 每4小时加班获得半天假期
+    }
+</script>
 </body>
 </html>

@@ -7,7 +7,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import sg.edu.nus.javawebca.models.CompensationLeave;
+import sg.edu.nus.javawebca.models.CompensationLeaveHistory;
 import sg.edu.nus.javawebca.models.LeaveApplicationStatusEnum;
+import sg.edu.nus.javawebca.services.CompensationLeaveHistoryService;
 import sg.edu.nus.javawebca.services.CompensationLeaveInterface;
 
 import java.time.LocalDateTime;
@@ -53,16 +55,27 @@ public class CompensationLeaveController {
         List<CompensationLeaveHistory> historyLeaves = compensationLeaveHistoryService.findLeavesEndingAfter(compensationLeave.getStartDate());
         if (!historyLeaves.isEmpty()) {
             System.out.println("wrong");
-            bindingResult.rejectValue("startDate", "error.compensationLeave", "There is a historical leave that conflicts with the new leave's start date.");
+            bindingResult.rejectValue("startDate", "error.compensationLeaveHistory", "There is a historical leave that conflicts with the new leave's start date.");
         }
 
 
         if (bindingResult.hasErrors()) {
+            System.out.println("Wow");
             return "apply-comLeave";
         }
         compensationLeave.setStatus(LeaveApplicationStatusEnum.APPLIED);
         compensationLeave.setCreate_at(LocalDateTime.now());
         compensationLeaveInterface.createCompensationLeave(compensationLeave);
+
+        // Create and save CompensationLeaveHistory
+        CompensationLeaveHistory compensationLeaveHistory = new CompensationLeaveHistory();
+        compensationLeaveHistory.setCompensationLeave(compensationLeave);
+        compensationLeaveHistory.setStartDate(compensationLeave.getStartDate());
+        compensationLeaveHistory.setEndDate(compensationLeave.getEndDate());
+        compensationLeaveHistory.setStartPeriod(compensationLeave.getStartPeriod());
+        compensationLeaveHistory.setEndPeriod(compensationLeave.getEndPeriod());
+        compensationLeaveHistoryService.save(compensationLeaveHistory);
+
         System.out.println("right");
         return "redirect:/staff/compensationLeave/history"; // Redirect to leave application list
     }
@@ -71,24 +84,38 @@ public class CompensationLeaveController {
     @GetMapping("/compensationLeave/edit/{id}")
     public String editLeavePage(@PathVariable Integer id, Model model) {
         CompensationLeave compensationLeave = compensationLeaveInterface.findCompensationLeaveById(id);
+        compensationLeave.setStatus(LeaveApplicationStatusEnum.UPDATED);
+        compensationLeave.setUpdate_at(LocalDateTime.now());
+        compensationLeaveInterface.deleteCompensationLeave(compensationLeave);
         model.addAttribute("compensationLeave", compensationLeave);
-
         return "compensationLeave-edit";
     }
 
-    @PostMapping("/compensationLeave/edit/{id}")
-    public String editCourse(@ModelAttribute CompensationLeave compensationLeave, BindingResult result, @PathVariable Integer id){
-        compensationLeave.setStatus(LeaveApplicationStatusEnum.UPDATED);
-        compensationLeave.setUpdate_at(LocalDateTime.now());
-        compensationLeaveInterface.updateCompensationLeave(compensationLeave);
-        return "redirect:/staff/compensationLeave/history";
-    }
+//    @PostMapping("/compensationLeave/edit/{id}")
+//    public String editCourse(@ModelAttribute CompensationLeave compensationLeave, BindingResult result, @PathVariable Integer id){
+//        compensationLeave.setStatus(LeaveApplicationStatusEnum.UPDATED);
+//        compensationLeave.setUpdate_at(LocalDateTime.now());
+//        compensationLeaveInterface.updateCompensationLeave(compensationLeave);
+//
+////        // Create and save CompensationLeaveHistory for update
+////        CompensationLeaveHistory compensationLeaveHistory = new CompensationLeaveHistory();
+////        compensationLeaveHistory.setCompensationLeave(compensationLeave);
+////        compensationLeaveHistory.setStartDate(compensationLeave.getStartDate());
+////        compensationLeaveHistory.setEndDate(compensationLeave.getEndDate());
+////        compensationLeaveHistory.setStartPeriod(compensationLeave.getStartPeriod());
+////        compensationLeaveHistory.setEndPeriod(compensationLeave.getEndPeriod());
+////        compensationLeaveHistoryService.save(compensationLeaveHistory);
+//
+//        return "redirect:/staff/compensationLeave/history";
+//    }
 
     @RequestMapping(value="/compensationLeave/delete/{id}")
     public String deleteCompensationLeave(@PathVariable Integer id){
         CompensationLeave compensationLeave = compensationLeaveInterface.findCompensationLeaveById(id);
+        if(compensationLeave.getStatus()==LeaveApplicationStatusEnum.APPLIED){
         compensationLeave.setStatus(LeaveApplicationStatusEnum.DELETED);
         compensationLeaveInterface.deleteCompensationLeave(compensationLeave);
+        }
 
         String message = "Leave application deleted successfully";
 

@@ -12,4 +12,6 @@ public interface CompensationLeaveHistoryRepository extends JpaRepository<Compen
 
     @Query("SELECT h FROM CompensationLeaveHistory h WHERE h.endDate >= :startDate")
     List<CompensationLeaveHistory> findLeavesEndingAfter(@Param("startDate") LocalDate startDate);
+
+    List<CompensationLeaveHistory> findByEndDateAfter(LocalDate startDate);
 }
