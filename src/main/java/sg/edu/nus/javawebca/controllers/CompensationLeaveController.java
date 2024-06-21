@@ -7,12 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import sg.edu.nus.javawebca.models.CompensationLeave;
-import sg.edu.nus.javawebca.models.CompensationLeaveHistory;
-import sg.edu.nus.javawebca.models.LeaveApplication;
 import sg.edu.nus.javawebca.models.LeaveApplicationStatusEnum;
-import sg.edu.nus.javawebca.services.CompensationLeaveHistoryService;
 import sg.edu.nus.javawebca.services.CompensationLeaveInterface;
-import sg.edu.nus.javawebca.services.LeaveApplicationInterface;
 
 import java.time.LocalDateTime;
 import java.util.List;
