@@ -7,6 +7,10 @@
 </head>
 <body>
 <div class="container">
+    <!-- Welcome message at the top -->
+    <div class="alert alert-info mt-3" role="alert">
+        Welcome, <span th:text="${username}">username</span>
+    </div>
     <nav class="sidebar">
         <h2>Menu</h2>
         <ul>
@@ -32,6 +36,8 @@
                 <th>Work Dissemination</th>
                 <th>Contact Details</th>
                 <th>Status</th>
+                <th>Create Time</th>
+                <th>Update Time</th>
                 <th>Actions</th> <!-- 添加一个新的表头用于操作 -->
             </tr>
             </thead>

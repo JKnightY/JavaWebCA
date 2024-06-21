@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import sg.edu.nus.javawebca.models.LeaveApplication;
 import sg.edu.nus.javawebca.models.LeaveApplicationStatusEnum;
 import sg.edu.nus.javawebca.models.PublicHoliday;
+import sg.edu.nus.javawebca.models.User;
 import sg.edu.nus.javawebca.repositories.LeaveApplicationRepository;
 
 import java.time.DayOfWeek;
@@ -113,5 +114,10 @@ public class LeaveApplicationImpl implements LeaveApplicationInterface {
         long requestedDays = calculateTotalDays(leaveApplication.getStart_date(), leaveApplication.getEnd_date());
         return currentYearTotalMedicalLeaveDays + requestedDays <= 60;
     }
+
+    public boolean datesOverlap(LeaveApplication newLeave, LeaveApplication existingLeave) {
+        return !newLeave.getEnd_date().isBefore(existingLeave.getStart_date()) && !newLeave.getStart_date().isAfter(existingLeave.getEnd_date());
+    }
+
 
 }
