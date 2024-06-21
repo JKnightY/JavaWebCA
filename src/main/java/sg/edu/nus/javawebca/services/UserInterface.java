@@ -11,4 +11,5 @@ public interface UserInterface {
 	  User changeUser(User user);
 	  void removeUser(User user);
 	  User authenticate(String account, String pwd);
+	  User findByAccount(String account);
 }

@@ -16,7 +16,15 @@
         </ul>
     </nav>
     <div class="content">
-        <h1>Leave Entitlement List</h1>
+        <div class="header-row">
+            <h1>Leave Entitlement List</h1>
+            <div class="logout-container">
+                <form th:action="@{/logout}" method="post">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                    <button type="submit" class="logout-btn">Logout</button>
+                </form>
+            </div>
+        </div>
         <table>
             <thead>
             <tr>

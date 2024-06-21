@@ -2,23 +2,23 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
 <h3>Login</h3>
-<form th:action="@{/home/authenticate}" th:object="${user}" method="post">
+<form th:action="@{/login}" th:object="${user}" method="post">
   <table class="framed">
     <tr>
-      <td>账号:</td>
+      <td>Account:</td>
       <td><input type="text" th:field="*{account}"></td>
       <td><span th:if="${#fields.hasErrors('account')}" th:errors="*{account}"></span></td>
     </tr>
     <tr>
-      <td>密码:</td>
+      <td>Password:</td>
       <td><input type="password" th:field="*{password}"></td>
       <td><span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span></td>
     </tr>
     <tr>
       <td></td>
       <td>
-        <input type="submit" />
-        <input type="reset" />
+        <input type="submit" value = "submit"/>
+        <input type="reset" value = "reset"/>
       </td>
     </tr>
     <tr>

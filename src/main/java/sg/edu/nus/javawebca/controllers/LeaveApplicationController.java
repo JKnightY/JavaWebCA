@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import sg.edu.nus.javawebca.models.LeaveApplicationStatusEnum;
 import sg.edu.nus.javawebca.models.LeaveType;
 import sg.edu.nus.javawebca.models.User;
-import sg.edu.nus.javawebca.repositories.LeaveTypeRepository;
 import sg.edu.nus.javawebca.services.LeaveApplicationInterface;
 import sg.edu.nus.javawebca.models.LeaveApplication;
 import sg.edu.nus.javawebca.services.LeaveTypeService;
@@ -33,7 +32,7 @@ public class LeaveApplicationController {
     @Autowired
     private LeaveApplicationValidator leaveApplicationValidator;
 
-    @InitBinder("leaveApplication")
+    @InitBinder("/leaveApplication")
     private void initCourseBinder(WebDataBinder binder) {
         binder.addValidators(leaveApplicationValidator);
     }
@@ -47,15 +46,12 @@ public class LeaveApplicationController {
     @RequestMapping("/leaveApplication/history")
     public String allLeaveApplication(HttpSession session, Model model) {
         User user = (User) session.getAttribute("user");
-        if (user == null) {
-            return "redirect:/login"; // 如果没有找到用户，则重定向到登录页面
-        }
 
         List<LeaveApplication> leaveApplications = leaveApplicationinterface.findLeaveApplicationsByUserId(user.getId());
         model.addAttribute("leaveApplications", leaveApplications);
         List<LeaveType> leaveTypes = leaveTypeService.findAllLeaveTypes();
         model.addAttribute("leaveTypes", leaveTypes);
-        return "leaveApplication-history";
+        return "/leaveApplication-history";
     }
 
     @GetMapping("/apply-leave")
@@ -63,7 +59,7 @@ public class LeaveApplicationController {
         List<LeaveType> leaveTypes = leaveTypeService.findAllLeaveTypes();
         model.addAttribute("leaveTypes", leaveTypes);
         model.addAttribute("leaveApplication", new LeaveApplication());
-        return "apply-leave"; // The form for applying leave
+        return "/apply-leave"; // The form for applying leave
     }
 
     @PostMapping("/apply-leave")
@@ -72,7 +68,7 @@ public class LeaveApplicationController {
             // 即使 leaveTypes 不为空，我们仍然需要在有错误时重新加载它们，以便返回表单页面时显示
             List<LeaveType> leaveTypes = leaveTypeService.findAllLeaveTypes();
             model.addAttribute("leaveTypes", leaveTypes);
-            return "apply-leave"; // Return to form if there are errors
+            return "/apply-leave"; // Return to form if there are errors
         }
 
         User user = (User) session.getAttribute("user");
@@ -99,7 +95,7 @@ public class LeaveApplicationController {
         model.addAttribute("leaveTypes", leaveTypes);
         model.addAttribute("leaveApplication", leaveApplication);
 
-        return "leaveApplication-edit";
+        return "/eaveApplication-edit";
     }
 
     @PostMapping("/leaveApplication/edit/{id}")
@@ -107,7 +103,7 @@ public class LeaveApplicationController {
         if (result.hasErrors()) {
             List<LeaveType> leaveTypes = leaveTypeService.findAllLeaveTypes();
             model.addAttribute("leaveTypes", leaveTypes);
-            return "leaveApplication-edit"; // Return to form if there are errors
+            return "/leaveApplication-edit"; // Return to form if there are errors
         }
         User user = (User) session.getAttribute("user");
         leaveApplication.setUser(user);

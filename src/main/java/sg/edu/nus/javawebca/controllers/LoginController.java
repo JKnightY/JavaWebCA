@@ -3,15 +3,10 @@ package sg.edu.nus.javawebca.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
 import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
 import sg.edu.nus.javawebca.models.User;
 import sg.edu.nus.javawebca.services.UserInterface;
 
@@ -24,37 +19,34 @@ public class LoginController {
   @GetMapping(value = {"/", "/login", "/home"})
   public String login(Model model) {
     model.addAttribute("user", new User());
-
-    return "login";
+    return "/login";
   }
 
-  @RequestMapping(value = "/home/authenticate")
-  public String authenticate(@ModelAttribute("user") @Valid User user, BindingResult bindingResult, Model model,
-                             HttpSession session) {
-    if (bindingResult.hasErrors()) {
-      return "login";
-    }
-
-    User u = userInterface.authenticate(user.getAccount(), user.getPassword());
-
-    if (u == null) {
-      model.addAttribute("loginMessage", "Incorrect username/password");
-      return "login";
-    } else {
-      session.setAttribute("user", u);
-
-      if (u.getRole() == 0) {
+  @RequestMapping(value = "/login")
+  public String login(@ModelAttribute User user, HttpSession session, Model model) {
+    if (validateUser(user.getAccount(), user.getPassword())) {
+      /*session.setAttribute("userLogin", user.getAccount());*/
+      User inuser = userInterface.findByAccount(user.getAccount());
+      session.setAttribute("user", inuser);
+      if (inuser.getRole() == 0) {
         return "redirect:/Admin/users";
-      } else if (u.getRole() == 1) {
+      } else if (inuser.getRole() == 1) {
         return "redirect:/staff/leaveApplication/history";
-      } else if (u.getRole() == 2) {
-        return "redirect:http://localhost:8080/manager/status/";
+      } else if (inuser.getRole() == 2) {
+        return "redirect:http://localhost:3000/";
       } else {
         model.addAttribute("loginMessage", "Unauthorized access");
         return "login";
       }
+    } else {
+      model.addAttribute("loginMessage", "Invalid username or password.");
+      return "login";
     }
+  }
 
+  private boolean validateUser(String account, String password) {
+    User user = userInterface.findByAccount(account);
+    return user != null && user.getPassword().equals(password);
   }
 
   @RequestMapping(value = "/logout")

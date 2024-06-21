@@ -24,7 +24,7 @@ public class AdminController {
     @GetMapping("/users")
     public String listUsers(Model model) {
         model.addAttribute("users", adminService.findAllUsers());
-        return "user-list";
+        return "/user-list";
     }
 
     @GetMapping("/users/{id}")
@@ -41,14 +41,14 @@ public class AdminController {
     @RequestMapping("/users/create")
     public String createUser(Model model) {
         model.addAttribute("user", new User());
-        return "user-create";
+        return "/user-create";
     }
 
     @RequestMapping("/users/save")
     public String saveUser(@ModelAttribute("user") @Valid User inuser , BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             bindingResult.getAllErrors().forEach(error -> System.out.println(error.toString()));
-            return "user-create";
+            return "/user-create";
         }
 
         if(inuser.getRole()==0 || inuser.getRole()==1){
