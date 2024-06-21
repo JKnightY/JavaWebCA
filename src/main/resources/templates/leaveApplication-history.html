@@ -10,6 +10,7 @@
     <!-- Welcome message at the top -->
     <div class="alert alert-info mt-3" role="alert">
         Welcome, <span th:text="${username}">username</span>
+        <a th:href="@{/logout}" class="btn btn-danger">Logout</a>
     </div>
     <nav class="sidebar">
         <h2>Menu</h2>

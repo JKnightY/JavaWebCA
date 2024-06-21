@@ -21,7 +21,7 @@ public class User {
     @NotNull(message = "account must be provided")
     private String account;
     private String password;
-    @NotNull(message = "username must be provided")
+    //@NotNull(message = "username must be provided")
     private String username;
     @NotNull(message = "role type must be provided")
     private Integer role = 1;//"0" = "admin" "1" = "staff" "2" = "manager"
