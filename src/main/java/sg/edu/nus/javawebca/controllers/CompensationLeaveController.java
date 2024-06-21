@@ -1,13 +1,16 @@
 package sg.edu.nus.javawebca.controllers;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import sg.edu.nus.javawebca.models.CompensationLeave;
+import sg.edu.nus.javawebca.models.CompensationLeaveHistory;
 import sg.edu.nus.javawebca.models.LeaveApplication;
 import sg.edu.nus.javawebca.models.LeaveApplicationStatusEnum;
+import sg.edu.nus.javawebca.services.CompensationLeaveHistoryService;
 import sg.edu.nus.javawebca.services.CompensationLeaveInterface;
 import sg.edu.nus.javawebca.services.LeaveApplicationInterface;
 
@@ -20,14 +23,8 @@ public class CompensationLeaveController {
     @Autowired
     private CompensationLeaveInterface compensationLeaveInterface;
 
-//    @Autowired
-//    private LeaveApplicationValidator leaveApplicationValidator;
-
-//    @InitBinder("leaveApplication")
-//    private void initCourseBinder(WebDataBinder binder) {
-//        binder.addValidators(leaveApplicationValidator);
-//    }
-
+    @Autowired
+    private CompensationLeaveHistoryService compensationLeaveHistoryService;
 
     @Autowired
     public void setCompensationLeave(CompensationLeaveInterface compensationLeave) {
@@ -46,18 +43,39 @@ public class CompensationLeaveController {
         model.addAttribute("compensationLeave", new CompensationLeave());
         return "apply-comLeave"; // The form for applying leave
     }
+
     @PostMapping("/apply-comLeave")
-    public String createApplyCompensationLeave(@ModelAttribute ("compensationLeave") CompensationLeave compensationLeave, BindingResult result, Model model) {
+    public String createCompensationLeave(@Valid CompensationLeave compensationLeave, BindingResult bindingResult, Model model) {
+        if (compensationLeave.getEndDate().isBefore(compensationLeave.getStartDate()) ||
+                (compensationLeave.getEndDate().isEqual(compensationLeave.getStartDate()) &&
+                        "MORNING".equals(compensationLeave.getEndPeriod()) &&
+                        "AFTERNOON".equals(compensationLeave.getStartPeriod()))) {
+            bindingResult.rejectValue("endDate", "error.compensationLeave", "End date and time cannot be earlier than start date and time.");
+        }
+
+        // Fetch historical leaves ending after the new leave's start date
+        List<CompensationLeaveHistory> historyLeaves = compensationLeaveHistoryService.findLeavesEndingAfter(compensationLeave.getStartDate());
+        if (!historyLeaves.isEmpty()) {
+            System.out.println("wrong");
+            bindingResult.rejectValue("startDate", "error.compensationLeave", "There is a historical leave that conflicts with the new leave's start date.");
+        }
+
+
+        if (bindingResult.hasErrors()) {
+            return "apply-comLeave";
+        }
         compensationLeave.setStatus(LeaveApplicationStatusEnum.APPLIED);
         compensationLeave.setCreate_at(LocalDateTime.now());
         compensationLeaveInterface.createCompensationLeave(compensationLeave);
+        System.out.println("right");
         return "redirect:/staff/compensationLeave/history"; // Redirect to leave application list
     }
 
+
     @GetMapping("/compensationLeave/edit/{id}")
     public String editLeavePage(@PathVariable Integer id, Model model) {
-       CompensationLeave compensationLeave = compensationLeaveInterface.findCompensationLeaveById(id);
-       model.addAttribute("compensationLeave", compensationLeave);
+        CompensationLeave compensationLeave = compensationLeaveInterface.findCompensationLeaveById(id);
+        model.addAttribute("compensationLeave", compensationLeave);
 
         return "compensationLeave-edit";
     }

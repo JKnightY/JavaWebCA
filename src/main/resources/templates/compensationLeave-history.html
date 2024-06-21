@@ -25,7 +25,11 @@
         <table class="table mt-3">
             <thead>
             <tr>
-                <th>Claim Date</th>
+                <th>Hours Time</th>
+                <th>Start Date</th>
+                <th>Start Period</th>
+                <th>End Date</th>
+                <th>End Period</th>
                 <th>Reason</th>
                 <th>Work Dissemination</th>
                 <th>Contact Details</th>
@@ -35,7 +39,11 @@
             </thead>
             <tbody>
             <tr th:each="compensationLeave : ${compensationLeaves}">
-                <td th:text="${compensationLeave.claim_date}"></td>
+                <td th:text="${compensationLeave.hours_worked}"></td>
+                <td th:text="${compensationLeave.startDate}"></td>
+                <td th:text="${compensationLeave.startPeriod}"></td>
+                <td th:text="${compensationLeave.endDate}"></td>
+                <td th:text="${compensationLeave.endPeriod}"></td>
                 <td th:text="${compensationLeave.reason}"></td>
                 <td th:text="${compensationLeave.work_dissemination}"></td>
                 <td th:text="${compensationLeave.contact_details}"></td>

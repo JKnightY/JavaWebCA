@@ -1,6 +1,8 @@
 package sg.edu.nus.javawebca.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -10,25 +12,40 @@ public class CompensationLeave {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-    @ManyToOne
-    private User approved_by;
+    @NotNull(message = "Start date is required")
+    private LocalDate startDate;
+    @NotNull(message = "End date is required")
+    private LocalDate endDate;
+    @NotNull(message = "Start period is required")
+    private String startPeriod;  // "MORNING", "AFTERNOON", "FULL_DAY"
+    @NotNull(message = "End period is required")
+    private String endPeriod;// "MORNING", "AFTERNOON", "FULL_DAY"
+    @Min(value = 0, message = "Hours worked must be greater than or equal to 0")
+    private double hours_worked;
 
     @Column(name = "status", columnDefinition = "ENUM('APPLIED', 'APPROVED', 'REJECTED', 'CANCEL', 'UPDATED', 'DELETED')")
     @Enumerated(EnumType.STRING)
     private LeaveApplicationStatusEnum status;//（1:applied、2:approved、3:rejected ...)
+    @ManyToOne
+    private User approved_by;
 
-
-    private LocalDate claim_date;
-    private double hours_worked;
+    @ManyToOne
+    private CompensationLeaveHistory CompensationLeaveHistory;
     private LocalDateTime create_at;
     private LocalDateTime update_at;
     private String reason;
     private String contact_details;
     private String work_dissemination;
-    private String claim_period; // "MORNING", "AFTERNOON", "FULL_DAY"
 
     public CompensationLeave() {
+    }
+
+    public sg.edu.nus.javawebca.models.CompensationLeaveHistory getCompensationLeaveHistory() {
+        return CompensationLeaveHistory;
+    }
+
+    public void setCompensationLeaveHistory(sg.edu.nus.javawebca.models.CompensationLeaveHistory compensationLeaveHistory) {
+        CompensationLeaveHistory = compensationLeaveHistory;
     }
 
     public LeaveApplicationStatusEnum getStatus() {
@@ -39,13 +56,6 @@ public class CompensationLeave {
         this.status = status;
     }
 
-    public String getClaim_period() {
-        return claim_period;
-    }
-
-    public void setClaim_period(String claim_period) {
-        this.claim_period = claim_period;
-    }
 
     public String getReason() {
         return reason;
@@ -79,13 +89,6 @@ public class CompensationLeave {
         this.id = id;
     }
 
-    public LocalDate getClaim_date() {
-        return claim_date;
-    }
-
-    public void setClaim_date(LocalDate claim_date) {
-        this.claim_date = claim_date;
-    }
 
     public double getHours_worked() {
         return hours_worked;
@@ -119,4 +122,37 @@ public class CompensationLeave {
     public void setUpdate_at(LocalDateTime update_at) {
         this.update_at = update_at;
     }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getStartPeriod() {
+        return startPeriod;
+    }
+
+    public void setStartPeriod(String startPeriod) {
+        this.startPeriod = startPeriod;
+    }
+
+    public String getEndPeriod() {
+        return endPeriod;
+    }
+
+    public void setEndPeriod(String endPeriod) {
+        this.endPeriod = endPeriod;
+    }
 }
+
