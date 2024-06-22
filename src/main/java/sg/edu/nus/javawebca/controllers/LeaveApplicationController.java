@@ -129,7 +129,7 @@ public class LeaveApplicationController {
         model.addAttribute("leaveTypes", leaveTypes);
         model.addAttribute("leaveApplication", leaveApplication);
 
-        return "/eaveApplication-edit";
+        return "/leaveApplication-edit";
     }
 
     @PostMapping("/leaveApplication/edit/{id}")
@@ -153,12 +153,29 @@ public class LeaveApplicationController {
     }
 
     @RequestMapping(value = "/leaveApplication/delete/{id}")
-    public String deleteLeaveApplication(@PathVariable Integer id) {
+    public String deleteLeaveApplication(@PathVariable Integer id, HttpSession session) {
         LeaveApplication leaveApplication = leaveApplicationinterface.findLeaveApplicationById(id);
         leaveApplication.setStatus(LeaveApplicationStatusEnum.DELETED);
         leaveApplicationinterface.deleteLeaveApplication(leaveApplication);
 
         String message = "Leave application deleted successfully";
+
+        User user = (User) session.getAttribute("user");
+
+        long daysBetween = ChronoUnit.DAYS.between(leaveApplication.getStart_date(), leaveApplication.getEnd_date());
+        Integer intdays = (int) daysBetween;
+
+        System.out.println("days: " + intdays);
+
+        if (leaveApplication.getLeaveType().getId() == 1 || leaveApplication.getLeaveType().getId() == 2) {
+            user.setAnnual_leave_entitlement_last(user.getAnnual_leave_entitlement_last() + intdays);
+        } else if (leaveApplication.getLeaveType().getId() == 3) { // Medical leave type ID
+            user.setMedical_leave_entitlement_last(user.getMedical_leave_entitlement_last() + intdays);
+        }
+
+        System.out.println("Before update: " + user);
+        userService.updateUser(user);
+        System.out.println("After update: " + user);
 
         return "redirect:/staff/leaveApplication/history";
     }
