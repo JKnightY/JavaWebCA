@@ -68,17 +68,7 @@ public class LeaveApplicationImpl implements LeaveApplicationInterface {
         if (isNonWorkingDay(startDate) || isNonWorkingDay(endDate)) {
             return false;
         }
-
-        long totalDays = calculateTotalDays(startDate, endDate);
-        long workingDays = calculateWorkingDays(startDate, endDate, publicHolidays);
-
-        if (totalDays <= 14) {
-            // 小于等于14天，排除周末和公共假期
-            return workingDays <= 14;
-        } else {
-            // 超过14天，包括周末和公共假期
-            return totalDays > 14;
-        }
+        return true;
     }
 
     public boolean isNonWorkingDay(LocalDate date) {
@@ -96,23 +86,22 @@ public class LeaveApplicationImpl implements LeaveApplicationInterface {
         return false;
     }
 
-   public long calculateTotalDays(LocalDate start, LocalDate end) {
-        return start.datesUntil(end.plusDays(1)).count();
+    public int calculateTotalDays(LocalDate start, LocalDate end) {
+        // Use Math.toIntExact to safely convert long to int
+        return Math.toIntExact(start.datesUntil(end.plusDays(1)).count());
     }
 
-    private long calculateWorkingDays(LocalDate start, LocalDate end, List<PublicHoliday> publicHolidays) {
+    public int calculateWorkingDays(LocalDate start, LocalDate end, List<PublicHoliday> publicHolidays) {
         Set<LocalDate> holidays = publicHolidays.stream()
                 .map(PublicHoliday::getHoliday_date)
                 .collect(Collectors.toSet());
 
-        return start.datesUntil(end.plusDays(1))
+        long workingDaysCount = start.datesUntil(end.plusDays(1))
                 .filter(date -> !isNonWorkingDay(date) && !holidays.contains(date))
                 .count();
-    }
 
-    public boolean isMedicalLeaveEligible(LeaveApplication leaveApplication, int currentYearTotalMedicalLeaveDays) {
-        long requestedDays = calculateTotalDays(leaveApplication.getStart_date(), leaveApplication.getEnd_date());
-        return currentYearTotalMedicalLeaveDays + requestedDays <= 60;
+        // Use Math.toIntExact to safely convert long to int
+        return Math.toIntExact(workingDaysCount);
     }
 
     public boolean datesOverlap(LeaveApplication newLeave, LeaveApplication existingLeave) {

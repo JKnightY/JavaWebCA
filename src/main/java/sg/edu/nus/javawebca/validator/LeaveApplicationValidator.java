@@ -93,20 +93,24 @@ public class LeaveApplicationValidator implements Validator {
 
         if (leaveApplication.getLeaveType() != null && leaveApplication.getStart_date() != null && leaveApplication.getEnd_date() != null) {
 
-            long requestedDays = leaveApplicationService.calculateTotalDays(leaveApplication.getStart_date(), leaveApplication.getEnd_date());
+            int requestedDays = leaveApplicationService.calculateTotalDays(leaveApplication.getStart_date(), leaveApplication.getEnd_date());
+            int realdays;
+            if (requestedDays <= 14) {
+                realdays = requestedDays;
+            } else {
+                realdays = leaveApplicationService.calculateWorkingDays(leaveApplication.getStart_date(), leaveApplication.getEnd_date(), publicHolidayService.getAllPublicHolidays());
+            }
 
-            if (Objects.equals(leaveApplication.getLeaveType().getName(), "AnnualLeave")) {
+            if (leaveApplication.getLeaveType().getId() == 1 || leaveApplication.getLeaveType().getId() == 2) {
                 boolean isEligible = leaveApplicationService.isAnnualLeaveEligible(leaveApplication, publicHolidayService.getAllPublicHolidays());
                 if (!isEligible) {
                     errors.rejectValue("leaveType", "leaveType.invalid", "Annual leave calculation is incorrect.");
-                } else if (requestedDays > user.getAnnual_leave_entitlement_last()) {
+                } else if (realdays > user.getAnnual_leave_entitlement_last()) {
                     errors.rejectValue("leaveType", "leaveType.insufficient", "Insufficient annual leave balance.");
                 }
-            } else if (Objects.equals(leaveApplication.getLeaveType().getName(), "MedicalLeave")) {
-                boolean isEligible = leaveApplicationService.isMedicalLeaveEligible(leaveApplication, user.getMedical_leave_entitlement_last());
-                if (!isEligible) {
-                    errors.rejectValue("leaveType", "leaveType.invalid", "Medical leave exceeds the allowed limit.");
-                } else if (requestedDays > user.getMedical_leave_entitlement_last()) {
+            }
+            if (leaveApplication.getLeaveType().getId() == 3 && requestedDays > user.getMedical_leave_entitlement_last()) {
+                {
                     errors.rejectValue("leaveType", "leaveType.insufficient", "Insufficient medical leave balance.");
                 }
             }

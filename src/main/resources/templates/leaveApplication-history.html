@@ -9,7 +9,7 @@
 <div class="container">
     <!-- Welcome message at the top -->
     <div class="alert alert-info mt-3" role="alert">
-        Welcome, <span th:text="${username}">username</span>
+        Welcome, <span th:text="${user.getUsername()}">username</span>
         <a th:href="@{/logout}" class="btn btn-danger">Logout</a>
     </div>
     <nav class="sidebar">
@@ -19,6 +19,12 @@
             <li><a th:href="@{/staff/compensationLeave/history}">My Compensation Claims</a></li>
         </ul>
     </nav>
+    <div class="leave-balance mt-3">
+        <h3>Leave Balance</h3>
+        <p>Annual Leave Balance: <span th:text="${user.getAnnual_leave_entitlement_last()}">0</span> days</p>
+        <p>Medical Leave Balance: <span th:text="${user.getMedical_leave_entitlement_last()}">0</span> days</p>
+        <p>Compensation Leave Balance: <span th:text="${user.getCompensation_leave_balance_last()}">0</span> days</p>
+    </div>
     <h1 class="mt-5">Your Leave Applications</h1>
 
     <a href="/staff/apply-leave" class="btn btn-primary">Create Leave Application</a>
@@ -59,7 +65,7 @@
                         <a th:href="@{/staff/leaveApplication/delete/}+${leaveApplication.id}">Delete</a>
                     </div>
                     <div th:if="${#strings.equals(leaveApplication.status, 'APPROVED')}">
-                        <a th:href="@{/staff/leaveApplication/cancel/}+${leaveApplication.id}">Cancel</a>
+                        <a th:href="@{/staff/leaveApplication/cancel/}+${leaveApplication.id}" class="cancel-btn" th:data-start-date="${leaveApplication.start_date}">Cancel</a>
                     </div>
                 </td>
             </tr>
@@ -67,5 +73,25 @@
         </table>
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.cancel-btn').each(function() {
+            var startDate = $(this).data('start-date');
+            var startDateOnly = new Date(startDate);
+            startDateOnly.setHours(0, 0, 0, 0);
+            var currentDate = new Date();
+            currentDate.setHours(0, 0, 0, 0);
+
+            if (currentDate > startDateOnly) {
+                $(this).click(function(event) {
+                    event.preventDefault();
+                    alert('Cannot cancel leave after the start date.');
+                });
+            }
+        });
+    });
+</script>
 </body>
 </html>

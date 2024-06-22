@@ -92,14 +92,21 @@
             <div th:if="${#fields.hasErrors('contact_details')}" th:errors="*{contact_details}" class="text-danger"></div>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="reset" class="btn btn-secondary" id="resetBtn">Reset</button>
     </form>
 </div>
 
 <script>
+    //补偿休假页面
     document.getElementById('leaveType').addEventListener('change', function() {
         if (this.value === '4') {  // Check if the selected leaveTypeID is 4
             window.location.href = '/staff/apply-comLeave';  // Redirect to the desired URL
         }
+
+        // 重置按钮的逻辑
+        $('#resetBtn').click(function() {
+            $('#leaveForm')[0].reset();
+        });
     });
 </script>
 </body>
