@@ -168,7 +168,6 @@ public class AdminController {
             inuser.setRole(existingUser.getRole());
             inuser.setAccount(existingUser.getAccount());
             inuser.setEmail(existingUser.getEmail());
-
         }
         adminService.updateUser(inuser);
         return "redirect:/Admin/leaveentitlements";

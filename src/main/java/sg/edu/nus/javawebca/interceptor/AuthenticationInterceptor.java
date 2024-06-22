@@ -1,10 +1,8 @@
 package sg.edu.nus.javawebca.interceptor;
 
 import java.io.IOException;
-
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -23,7 +21,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             return true;
 
         String[] splitURI = request.getRequestURI().split("/");
-        if (splitURI[splitURI.length - 1].equals("login") || splitURI[splitURI.length - 1].equals("error"))
+        if (splitURI[splitURI.length - 1].equals("login"))
             return true;
 
         // If the user has not logged in, redirect her/him to login

@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpSession;
 import sg.edu.nus.javawebca.models.User;
 import sg.edu.nus.javawebca.services.UserInterface;
 
-
 @Controller
 public class LoginController {
   @Autowired
@@ -25,7 +24,6 @@ public class LoginController {
   @RequestMapping(value = "/login")
   public String login(@ModelAttribute User user, HttpSession session, Model model) {
     if (validateUser(user.getAccount(), user.getPassword())) {
-      /*session.setAttribute("userLogin", user.getAccount());*/
       User inuser = userInterface.findByAccount(user.getAccount());
       session.setAttribute("user", inuser);
       if (inuser.getRole() == 0) {

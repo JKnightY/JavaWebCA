@@ -22,12 +22,6 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    @Transactional
-    public User createUser(User user) {
-        return adminRepository.save(user);
-    }
-
-    @Override
     public Optional<User> findUserById(int id) {
         return adminRepository.findById(id);
     }
