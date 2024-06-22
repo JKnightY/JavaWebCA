@@ -111,7 +111,7 @@ public class LeaveApplicationController {
         leaveApplicationinterface.createApplyLeave(inleaveApplication);
 
         long daysBetween = ChronoUnit.DAYS.between(inleaveApplication.getStart_date(), inleaveApplication.getEnd_date());
-        Integer intdays = (int) daysBetween;
+        Integer intdays = (int) daysBetween + 1;
 
         System.out.println("days: " + intdays);
 
@@ -169,7 +169,7 @@ public class LeaveApplicationController {
         User user = (User) session.getAttribute("user");
 
         long daysBetween = ChronoUnit.DAYS.between(leaveApplication.getStart_date(), leaveApplication.getEnd_date());
-        Integer intdays = (int) daysBetween;
+        Integer intdays = (int) daysBetween + 1;
 
         System.out.println("days: " + intdays);
 
