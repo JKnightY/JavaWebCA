@@ -94,5 +94,13 @@
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
+
+<script>
+    document.getElementById('leaveType').addEventListener('change', function() {
+        if (this.value === '4') {  // Check if the selected leaveTypeID is 4
+            window.location.href = '/staff/apply-comLeave';  // Redirect to the desired URL
+        }
+    });
+</script>
 </body>
 </html>
