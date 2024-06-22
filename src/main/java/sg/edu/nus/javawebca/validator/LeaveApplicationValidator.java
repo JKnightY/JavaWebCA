@@ -26,11 +26,9 @@ public class LeaveApplicationValidator implements Validator {
     @Autowired
     private HttpSession session;
 
-
     @Override
     public boolean supports(Class<?> clazz) {
         return LeaveApplication.class.isAssignableFrom(clazz);
-
     }
 
     @Override
@@ -72,7 +70,7 @@ public class LeaveApplicationValidator implements Validator {
 
         // 验证开始日期和结束日期不能在过去
         LocalDate today = LocalDate.now();
-        if (leaveApplication.getStart_date().isBefore(today)) {
+        if (leaveApplication.getStart_date() != null && leaveApplication.getStart_date().isBefore(today)) {
             errors.rejectValue("start_date", "start_date.past", "Start date cannot be in the past.");
         }
 
@@ -104,14 +102,13 @@ public class LeaveApplicationValidator implements Validator {
                 } else if (requestedDays > user.getAnnual_leave_entitlement_last()) {
                     errors.rejectValue("leaveType", "leaveType.insufficient", "Insufficient annual leave balance.");
                 }
-            } else if (leaveApplication.getLeaveType().getName() == "MedicalLeave") {
+            } else if (Objects.equals(leaveApplication.getLeaveType().getName(), "MedicalLeave")) {
                 boolean isEligible = leaveApplicationService.isMedicalLeaveEligible(leaveApplication, user.getMedical_leave_entitlement_last());
                 if (!isEligible) {
                     errors.rejectValue("leaveType", "leaveType.invalid", "Medical leave exceeds the allowed limit.");
                 } else if (requestedDays > user.getMedical_leave_entitlement_last()) {
                     errors.rejectValue("leaveType", "leaveType.insufficient", "Insufficient medical leave balance.");
                 }
-
             }
         }
     }

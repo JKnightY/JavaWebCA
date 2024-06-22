@@ -27,3 +27,21 @@ CREATE TABLE IF NOT EXISTS leave_application
     user_id            INT,
     FOREIGN KEY (leave_type_id) REFERENCES leave_type (id)
 );
+
+CREATE TABLE IF NOT EXISTS users
+(
+    id                              INT AUTO_INCREMENT PRIMARY KEY,
+    account                         VARCHAR(255) NOT NULL,
+    password                        VARCHAR(255) NOT NULL,
+    username                        VARCHAR(255),
+    department                      INT,
+    role                            INT,
+    email                           VARCHAR(255),
+    leave_approverid                INT,
+    annual_leave_entitlement        INT,
+    annual_leave_entitlement_last   INT,
+    medical_leave_entitlement       INT,
+    medical_leave_entitlement_last  INT,
+    compensation_leave_balance      INT,
+    compensation_leave_balance_last INT
+);
