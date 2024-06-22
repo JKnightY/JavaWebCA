@@ -11,4 +11,5 @@ public interface LeaveTypeService {
     void deleteLeaveType(LeaveType leaveType);
     Optional<LeaveType> findLeaveTypeById(int id);
     LeaveType updateLeaveType(LeaveType leaveType);
+    List<LeaveType> findLeaveTypesByIds(List<Integer> ids);
 }

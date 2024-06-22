@@ -43,4 +43,9 @@ public class LeaveTypeServiceImpl implements LeaveTypeService {
     public LeaveType updateLeaveType(LeaveType leaveType) {
         return leaveTypeRepository.save(leaveType);
     }
+
+    @Override
+    public List<LeaveType> findLeaveTypesByIds(List<Integer> ids) {
+        return leaveTypeRepository.findAllById(ids);
+    }
 }

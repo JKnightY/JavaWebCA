@@ -12,7 +12,6 @@ import java.util.Optional;
 import jakarta.validation.Valid;
 import sg.edu.nus.javawebca.services.LeaveTypeService;
 
-
 @Controller
 @RequestMapping("Admin")
 public class AdminController {
@@ -51,7 +50,7 @@ public class AdminController {
             return "/user-create";
         }
 
-        if(inuser.getRole()==0 || inuser.getRole()==1){
+        if(inuser.getDepartment()==0){
             Optional<LeaveType> AnnualleaveTypeO = leaveTypeService.findLeaveTypeById(1);
             Optional<LeaveType> MedicalleaveTypeO = leaveTypeService.findLeaveTypeById(3);
             LeaveType AnnualleaveType = AnnualleaveTypeO.get();
@@ -66,6 +65,9 @@ public class AdminController {
             inuser.setAnnual_leave_entitlement(AnnualleaveType.getMaxdays());
             inuser.setMedical_leave_entitlement(MedicalleaveType.getMaxdays());
         }
+
+        inuser.setAnnual_leave_entitlement_last(inuser.getAnnual_leave_entitlement());
+        inuser.setMedical_leave_entitlement_last(inuser.getMedical_leave_entitlement());
 
         adminService.updateUser(inuser);
         return "redirect:/Admin/users";
@@ -168,6 +170,7 @@ public class AdminController {
             inuser.setRole(existingUser.getRole());
             inuser.setAccount(existingUser.getAccount());
             inuser.setEmail(existingUser.getEmail());
+            inuser.setDepartment(existingUser.getDepartment());
         }
         adminService.updateUser(inuser);
         return "redirect:/Admin/leaveentitlements";

@@ -14,9 +14,11 @@ import sg.edu.nus.javawebca.models.User;
 import sg.edu.nus.javawebca.services.LeaveApplicationInterface;
 import sg.edu.nus.javawebca.models.LeaveApplication;
 import sg.edu.nus.javawebca.services.LeaveTypeService;
+import sg.edu.nus.javawebca.services.UserInterface;
 import sg.edu.nus.javawebca.validator.LeaveApplicationValidator;
-
+import java.util.Arrays;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,6 +33,9 @@ public class LeaveApplicationController {
 
     @Autowired
     private LeaveApplicationValidator leaveApplicationValidator;
+
+    @Autowired
+    private UserInterface userService;
 
     @InitBinder("/leaveApplication")
     private void initCourseBinder(WebDataBinder binder) {
@@ -59,8 +64,18 @@ public class LeaveApplicationController {
     }
 
     @GetMapping("/apply-leave")
-    public String showApplyLeaveForm(Model model) {
-        List<LeaveType> leaveTypes = leaveTypeService.findAllLeaveTypes();
+    public String showApplyLeaveForm(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        List<LeaveType> leaveTypes;
+
+        if (user.getDepartment() == 0) {
+            leaveTypes = leaveTypeService.findLeaveTypesByIds(Arrays.asList(1, 3, 4));
+        } else if (user.getDepartment() == 1) {
+            leaveTypes = leaveTypeService.findLeaveTypesByIds(Arrays.asList(2, 3, 4));
+        } else {
+            leaveTypes = leaveTypeService.findAllLeaveTypes(); // Fallback to all types if department is unknown
+        }
+
         model.addAttribute("leaveTypes", leaveTypes);
         model.addAttribute("leaveApplication", new LeaveApplication());
         return "/apply-leave"; // The form for applying leave
@@ -69,7 +84,6 @@ public class LeaveApplicationController {
     @PostMapping("/apply-leave")
     public String createApplyLeave(@ModelAttribute @Valid LeaveApplication inleaveApplication, BindingResult result, Model model, HttpSession session) {
         if (result.hasErrors()) {
-            // 即使 leaveTypes 不为空，我们仍然需要在有错误时重新加载它们，以便返回表单页面时显示
             List<LeaveType> leaveTypes = leaveTypeService.findAllLeaveTypes();
             model.addAttribute("leaveTypes", leaveTypes);
             return "/apply-leave"; // Return to form if there are errors
@@ -89,6 +103,22 @@ public class LeaveApplicationController {
         //System.out.println(leaveType);
         //inleaveApplication.setLeaveType(leaveType);
         leaveApplicationinterface.createApplyLeave(inleaveApplication);
+
+        long daysBetween = ChronoUnit.DAYS.between(inleaveApplication.getStart_date(), inleaveApplication.getEnd_date());
+        Integer intdays = (int) daysBetween;
+
+        System.out.println("days: " + intdays);
+
+        if (inleaveApplication.getLeaveType().getId() == 1 || inleaveApplication.getLeaveType().getId() == 2) {
+            user.setAnnual_leave_entitlement_last(user.getAnnual_leave_entitlement_last() - intdays);
+        } else if (inleaveApplication.getLeaveType().getId() == 3) { // Medical leave type ID
+            user.setMedical_leave_entitlement_last(user.getMedical_leave_entitlement_last() - intdays);
+        }
+
+        System.out.println("Before update: " + user);
+        userService.updateUser(user);
+        System.out.println("After update: " + user);
+
         return "redirect:/staff/leaveApplication/history"; // Redirect to leave application list
     }
 

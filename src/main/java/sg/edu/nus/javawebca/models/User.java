@@ -7,9 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 import jakarta.persistence.Table;
 import jakarta.persistence.*;
-
 import java.util.List;
-
 
 @Entity
 @Table(name = "users")
@@ -17,15 +15,17 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     @NotNull(message = "account must be provided")
     private String account;
     private String password;
     //@NotNull(message = "username must be provided")
     private String username;
+    private Integer department;
+    //"0" = administrative "1" = professional
     //@NotNull(message = "role type must be provided")
     private Integer role;//"0" = "admin" "1" = "staff" "2" = "manager"
     private String email;
+    private Integer LeaveApproverid;
     private int annual_leave_entitlement;
     private int annual_leave_entitlement_last;
     private int medical_leave_entitlement;
@@ -34,7 +34,6 @@ public class User {
     private int compensation_leave_balance_last;
     @OneToMany(mappedBy = "user")
     private List<LeaveApplication> leaveApplications;
-
     @OneToMany(mappedBy = "approved_by")
     private List<CompensationLeave> approvedLeaves;
 
@@ -151,5 +150,21 @@ public class User {
 
     public void setCompensation_leave_balance(int compensation_leave_balance) {
         this.compensation_leave_balance = compensation_leave_balance;
+    }
+
+    public Integer getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Integer department) {
+        this.department = department;
+    }
+
+    public Integer getLeaveApproverid() {
+        return LeaveApproverid;
+    }
+
+    public void setLeaveApproverid(Integer leaveApproverid) {
+        LeaveApproverid = leaveApproverid;
     }
 }

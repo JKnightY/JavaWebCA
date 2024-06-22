@@ -53,4 +53,6 @@ public class UserInterfaceImpl implements UserInterface {
   public User findByAccount(String account){
     return userRepository.findByAccount(account);
   }
+  @Override
+  public void updateUser(User user) { userRepository.save(user);}
 }

@@ -35,6 +35,20 @@
         <p th:if="${#fields.hasErrors('role')}" th:errors="*{role}">Role Error</p>
     </fieldset>
     <fieldset>
+        <label for="department">Department:</label>
+        <select id="department" th:field="*{department}">
+            <option value="" disabled selected>Select Department</option>
+            <option value= 0>Administrative</option>
+            <option value= 1>Professional</option>
+        </select>
+        <p th:if="${#fields.hasErrors('department')}" th:errors="*{department}">Department Error</p>
+    </fieldset>
+    <fieldset>
+        <label for="leaveApproverid">Leave Approver:</label>
+        <input type="number" id="leaveApproverid" th:field="*{leaveApproverid}">
+        <p th:if="${#fields.hasErrors('leaveApproverid')}" th:errors="*{leaveApproverid}">Leave Approver Error</p>
+    </fieldset>
+    <fieldset>
         <label for="email">Email:</label>
         <input type="email" id="email" th:field="*{email}">
         <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</p>
@@ -47,4 +61,3 @@
 </form>
 </body>
 </html>
-

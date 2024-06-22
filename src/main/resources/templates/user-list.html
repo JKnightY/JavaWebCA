@@ -33,6 +33,8 @@
                 <th>Password</th>
                 <th>Username</th>
                 <th>Role</th>
+                <th>Department</th>
+                <th>Leave Approver</th>
                 <th>Email</th>
                 <th style="width: 200px;">Actions</th>
             </tr>
@@ -44,6 +46,8 @@
                 <td th:text="${user.password}"></td>
                 <td th:text="${user.username}"></td>
                 <td th:text="${user.role == 0 ? 'Admin' : (user.role == 1 ? 'Staff' : (user.role == 2 ? 'Manager' : ''))}"></td>
+                <td th:text="${user.department == 0 ? 'Administrative' : 'Professional'}"></td>
+                <td th:text="${user.leaveApproverid}"></td>
                 <td th:text="${user.email}"></td>
                 <td class="actions">
                     <a th:href="@{/Admin/users/update/{id}(id=${user.id})}" class="btn btn-primary">Update</a>
@@ -61,4 +65,3 @@
 </div>
 </body>
 </html>
-

@@ -1,5 +1,3 @@
-/* user-create.css */
-
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
@@ -36,6 +34,7 @@ label {
 input[type="text"],
 input[type="password"],
 input[type="email"],
+input[type="number"], /* 添加这一行 */
 select {
     width: 100%;
     padding: 10px;
