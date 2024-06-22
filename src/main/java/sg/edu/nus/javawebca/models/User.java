@@ -39,6 +39,9 @@ public class User {
     @OneToMany(mappedBy = "approved_by")
     private List<CompensationLeave> approvedLeaves;
 
+    @OneToMany(mappedBy = "user")
+    private List<CompensationLeave> compensationLeaves;
+
     public User() {
     }
 
@@ -160,5 +163,13 @@ public class User {
 
     public void setHierarchy(Integer hierarchy) {
         this.hierarchy = hierarchy;
+    }
+
+    public List<CompensationLeave> getCompensationLeaves() {
+        return compensationLeaves;
+    }
+
+    public void setCompensationLeaves(List<CompensationLeave> compensationLeaves) {
+        this.compensationLeaves = compensationLeaves;
     }
 }

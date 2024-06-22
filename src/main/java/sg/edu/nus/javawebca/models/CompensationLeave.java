@@ -15,18 +15,19 @@ public class CompensationLeave {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @NotNull(message = "Start date is required")
     @FutureOrPresent(message = "Start date must be today or in the future")
     private LocalDate startDate;
-    @NotNull(message = "End date is required")
     @FutureOrPresent(message = "Start date must be today or in the future")
     private LocalDate endDate;
-    @NotNull(message = "Start period is required")
     private String startPeriod;  // "MORNING", "AFTERNOON", "FULL_DAY"
-    @NotNull(message = "End period is required")
     private String endPeriod;// "MORNING", "AFTERNOON", "FULL_DAY"
     @Min(value = 0, message = "Hours worked must be greater than or equal to 0")
     private double hours_worked;
+    private double Leave_days;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Column(name = "status", columnDefinition = "ENUM('APPLIED', 'APPROVED', 'REJECTED', 'CANCEL', 'UPDATED', 'DELETED')")
     @Enumerated(EnumType.STRING)
@@ -34,8 +35,7 @@ public class CompensationLeave {
     @ManyToOne
     private User approved_by;
 
-    @OneToMany(mappedBy = "compensationLeave", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CompensationLeaveHistory> histories = new ArrayList<>();
+
     private LocalDateTime create_at;
     private LocalDateTime update_at;
     private String reason;
@@ -152,12 +152,21 @@ public class CompensationLeave {
         this.endPeriod = endPeriod;
     }
 
-    public List<CompensationLeaveHistory> getHistories() {
-        return histories;
+
+    public double getLeave_days() {
+        return Leave_days;
     }
 
-    public void setHistories(List<CompensationLeaveHistory> histories) {
-        this.histories = histories;
+    public void setLeave_days(double leave_days) {
+        Leave_days = leave_days;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
 

@@ -4,7 +4,20 @@
     <meta charset="UTF-8">
     <title>Edit CompensationLeave Application</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/logout.css">
 </head>
+<body>
+<nav class="navbar">
+    <div class="navbar-brand">Leave Application Processing System</div>
+    <div class="navbar-menu">
+        <div class="dropdown">
+            <button class="dropbtn"><img src="shuainain.jpg" alt="Avatar" class="avatar"></button>
+            <div class="dropdown-content">
+                <a href="/logout">Logout</a>
+            </div>
+        </div>
+    </div>
+</nav>
 <div class="container">
     <h1 class="mt-5">Update CompensationLeave Application</h1>
     <form id="leave-application-form" action="/staff/apply-comLeave" th:object="${compensationLeave}" method="post" class="mt-3">

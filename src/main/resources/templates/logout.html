@@ -1,10 +1,64 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Custom Navbar</title>-->
+<!--    <link rel="stylesheet" href="/logout.css">-->
+<!--</head>-->
+<!--<body>-->
+<!--<nav class="navbar">-->
+<!--    <div class="navbar-brand">Leave Application Processing System</div>-->
+<!--    <div class="navbar-menu">-->
+<!--        <div class="dropdown">-->
+<!--            <button class="dropbtn"><img src="shuainain.jpg" alt="Avatar" class="avatar"></button>-->
+<!--            <div class="dropdown-content">-->
+<!--                <a href="/logout">Logout</a>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</nav>-->
+<!--</body>-->
+<!--</html>-->
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Logout</title>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="/logout.css">
 </head>
 <body>
-<h1>Logout the Leave Application System</h1>
-<a href="/logout">Logout</a>
-</body>
-</html>
+<nav class="navbar">
+    <div class="navbar-brand">Leave Application Processing System</div>
+<div class="navbar">
+    <div class="dropdown">
+        <img src="https://via.placeholder.com/40" alt="User">
+        <div class="dropdown-content">
+            <a href="/profile">Profile</a>
+            <a href="/settings">Settings</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+</div>
+</nav>
+<script>
+    document.addEventListener('click', function (event) {
+        var dropdown = document.querySelector('.dropdown-content');
+        var userImage = document.querySelector('.navbar img');
+
+        if (!dropdown.contains(event.target) && !userImage.contains(event.target)) {
+            dropdown.style.display = 'none';
+        }
+    });
+
+    document.querySelector('.navbar img').addEventListener('click', function () {
+        var dropdown = document.querySelector('.dropdown-content');
+        if (dropdown.style.display === 'block') {
+            dropdown.style.display = 'none';
+        } else {
+            dropdown.style.display = 'block';
+        }
+    });
+    </script>
+    </body>
+    </html>

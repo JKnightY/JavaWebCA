@@ -4,11 +4,28 @@
     <meta charset="UTF-8">
     <title>Apply Compensation Leave</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/logout.css">
 </head>
 <body>
+<nav class="navbar">
+    <div class="navbar-brand">Leave Application Processing System</div>
+    <div class="navbar">
+        <div class="dropdown">
+            <img src="https://via.placeholder.com/40" alt="User">
+            <div class="dropdown-content">
+                <a href="/profile">Profile</a>
+                <a href="/settings">Settings</a>
+                <a href="/logout">Logout</a>
+            </div>
+        </div>
+    </div>
+</nav>
 <div class="container">
     <h1 class="mt-5">Apply Compensation Leave</h1>
     <form id="leave-application-form" action="/staff/apply-comLeave" th:object="${compensationLeave}" method="post" class="mt-3">
+        <div>
+            <p>Remaining Compensation Days: <span th:text="${total}"></span></p>
+        </div>
         <div id="compensation-form">
             <label for="hoursWorked">Hours Worked:</label>
             <input type="number" id="hoursWorked" th:field="*{hours_worked}" name="hoursWorked" class="form-control" required>
@@ -44,6 +61,11 @@
         </div>
 <!--        <p id="error-message2" style="color: red;"></p>-->
         <div class="form-group">
+            <label for="leaveDays">Total Leave Days:</label>
+            <textarea id="leaveDays" th:field="*{leave_days}" class="form-control"></textarea>
+            <div th:if="${#fields.hasErrors('leave_days')}" th:errors="*{leave_days}" class="text-danger"></div>
+        </div>
+        <div class="form-group">
             <label for="reason">Reason:</label>
             <textarea id="reason" th:field="*{reason}" class="form-control"></textarea>
             <div th:if="${#fields.hasErrors('reason')}" th:errors="*{reason}" class="text-danger"></div>
@@ -58,6 +80,7 @@
             <textarea id="contactDetails" th:field="*{contact_details}" class="form-control"></textarea>
             <div th:if="${#fields.hasErrors('contact_details')}" th:errors="*{contact_details}" class="text-danger"></div>
         </div>
+        <input type="hidden" id="compensationLeaveId" th:field="*{id}">
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
@@ -72,6 +95,7 @@
     function calculateCompensationDays(hours) {
         return Math.floor(hours / 4) / 2;  // 每4小时加班获得半天假期
     }
+
 
     // document.getElementById('leave-application-form').addEventListener('submit', function(event) {
     //     // const hoursWorked = document.getElementById('hoursWorked').value;
@@ -92,5 +116,25 @@
     //     }
     // });
 </script>
+<script>
+    document.addEventListener('click', function (event) {
+        var dropdown = document.querySelector('.dropdown-content');
+        var userImage = document.querySelector('.navbar img');
+
+        if (!dropdown.contains(event.target) && !userImage.contains(event.target)) {
+            dropdown.style.display = 'none';
+        }
+    });
+
+    document.querySelector('.navbar img').addEventListener('click', function () {
+        var dropdown = document.querySelector('.dropdown-content');
+        if (dropdown.style.display === 'block') {
+            dropdown.style.display = 'none';
+        } else {
+            dropdown.style.display = 'block';
+        }
+    });
+</script>
+
 </body>
 </html>
