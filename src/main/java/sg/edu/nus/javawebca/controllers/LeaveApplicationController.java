@@ -37,8 +37,8 @@ public class LeaveApplicationController {
     @Autowired
     private UserInterface userService;
 
-    @InitBinder("/leaveApplication")
-    private void initCourseBinder(WebDataBinder binder) {
+    @InitBinder
+    private void initBinder(WebDataBinder binder) {
         binder.addValidators(leaveApplicationValidator);
     }
 
@@ -83,6 +83,12 @@ public class LeaveApplicationController {
 
     @PostMapping("/apply-leave")
     public String createApplyLeave(@ModelAttribute @Valid LeaveApplication inleaveApplication, BindingResult result, Model model, HttpSession session) {
+        // 调试信息：打印提交的数据
+        System.out.println("Submitted Leave Application: " + inleaveApplication);
+
+        // 打印各个字段的值，特别是 end_date
+        System.out.println("End Date: " + inleaveApplication.getEnd_date());
+
         if (result.hasErrors()) {
             List<LeaveType> leaveTypes = leaveTypeService.findAllLeaveTypes();
             model.addAttribute("leaveTypes", leaveTypes);
