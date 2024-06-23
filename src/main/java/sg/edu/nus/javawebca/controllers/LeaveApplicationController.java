@@ -65,7 +65,7 @@ public class LeaveApplicationController {
         model.addAttribute("leaveApplications", leaveApplications);
         List<LeaveType> leaveTypes = leaveTypeService.findAllLeaveTypes();
         model.addAttribute("leaveTypes", leaveTypes);
-        return "leaveApplication-history";
+        return "/leaveApplication-history";
     }
 
     @GetMapping("/apply-leave")

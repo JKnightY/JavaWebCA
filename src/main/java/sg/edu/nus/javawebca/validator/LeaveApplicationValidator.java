@@ -102,10 +102,7 @@ public class LeaveApplicationValidator implements Validator {
             }
 
             if (leaveApplication.getLeaveType().getId() == 1 || leaveApplication.getLeaveType().getId() == 2) {
-                boolean isEligible = leaveApplicationService.isAnnualLeaveEligible(leaveApplication, publicHolidayService.getAllPublicHolidays());
-                if (!isEligible) {
-                    errors.rejectValue("leaveType", "leaveType.invalid", "Annual leave calculation is incorrect.");
-                } else if (realdays > user.getAnnual_leave_entitlement_last()) {
+                if (realdays > user.getAnnual_leave_entitlement_last()) {
                     errors.rejectValue("leaveType", "leaveType.insufficient", "Insufficient annual leave balance.");
                 }
             }

@@ -4,109 +4,160 @@
     <meta charset="UTF-8">
     <title>Leave Applications</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .sidebar {
+            background-color: #343a40;
+            color: white;
+            padding: 15px;
+            height: 100vh;
+        }
+        .sidebar h5 {
+            color: white;
+        }
+        .sidebar a {
+            color: white;
+        }
+        .main-content {
+            background-color: #ffffff;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 15px;
+        }
+        .navbar {
+            margin-bottom: 20px;
+        }
+        .table th, .table td {
+            vertical-align: middle;
+        }
+        .pagination {
+            margin-top: 20px;
+        }
+        .navbar-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }.centered-title {
+             text-align: center;
+         }
+    </style>
 </head>
 <body>
-<div class="container">
-    <!-- Welcome message at the top -->
-    <div class="alert alert-info mt-3" role="alert">
-        Welcome, <span th:text="${user.getUsername()}">username</span>
-        <a th:href="@{/logout}" class="btn btn-danger">Logout</a>
-    </div>
-    <nav class="sidebar">
-        <h2>Menu</h2>
-        <ul>
-            <li><a th:href="@{/staff/leaveApplication/history}">My LeaveApplication History</a></li>
-            <li><a th:href="@{/staff/compensationLeave/history}">My Compensation Claims</a></li>
-        </ul>
-    </nav>
-    <div class="leave-balance mt-3">
-        <h3>Leave Balance</h3>
-        <p>Annual Leave Balance: <span th:text="${user.getAnnual_leave_entitlement_last()}">0</span> days</p>
-        <p>Medical Leave Balance: <span th:text="${user.getMedical_leave_entitlement_last()}">0</span> days</p>
-        <p>Compensation Leave Balance: <span th:text="${user.getCompensation_leave_balance_last()}">0</span> days</p>
-    </div>
-    <h1 class="mt-5">Your Leave Applications</h1>
+<div class="container-fluid">
+    <!-- 顶部导航栏 -->
 
-    <a href="/staff/apply-leave" class="btn btn-primary">Create Leave Application</a>
-    <div th:if="${leaveApplications.isEmpty()}">
-        <h3>You have not submitted any leave applications yet.</h3>
-    </div>
 
-    <div th:if="${!leaveApplications.isEmpty()}">
-        <table class="table mt-3">
-            <thead>
-            <tr>
-                <th>Leave Type</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Reason</th>
-                <th>Work Dissemination</th>
-                <th>Contact Details</th>
-                <th>Status</th>
-                <th>Create Time</th>
-                <th>Update Time</th>
-                <th>Actions</th> <!-- 添加一个新的表头用于操作 -->
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="leaveApplication : ${leaveApplications}">
-                <td th:text="${leaveApplication.leaveType.name}"></td>
-                <td th:text="${leaveApplication.start_date}"></td>
-                <td th:text="${leaveApplication.end_date}"></td>
-                <td th:text="${leaveApplication.reason}"></td>
-                <td th:text="${leaveApplication.work_dissemination}"></td>
-                <td th:text="${leaveApplication.contact_details}"></td>
-                <td th:text="${leaveApplication.status}"></td>
-                <td th:text="${#temporals.format(leaveApplication.created_at, 'yyyy-MM-dd HH:mm')}"></td>
-                <td th:text="${#temporals.format(leaveApplication.updated_at, 'yyyy-MM-dd HH:mm')}"></td>
-                <td>
-                    <div th:if="${#strings.equals(leaveApplication.status, 'APPLIED')  or #strings.equals(leaveApplication.status,'UPDATED')}">
-                        <a th:href="@{/staff/leaveApplication/edit/{id}(id=${leaveApplication.id})}">Update</a> |
-                        <a th:href="@{/staff/leaveApplication/delete/{id}(id=${leaveApplication.id})}">Delete</a>
-                    </div>
-                    <div th:if="${#strings.equals(leaveApplication.status, 'APPROVED')}">
-                        <a th:href="@{/staff/leaveApplication/cancel/{id}(id=${leaveApplication.id})}" class="cancel-btn" th:data-start-date="${leaveApplication.start_date}">Cancel</a>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <div class="pagination">
-            <ul class="pagination">
-                <li class="page-item" id="prev-page">
-                    <a class="page-link" href="#">&laquo;</a>
-                </li>
-                <li th:each="i : ${#numbers.sequence(0, leaveApplications.totalPages - 1)}" class="page-item" th:classappend="${leaveApplications.number == i} ? 'active'">
-                    <a class="page-link" href="#" th:data-page="${i}" th:text="${i + 1}">1</a>
-                </li>
-                <li class="page-item" id="next-page">
-                    <a class="page-link" href="#">&raquo;</a>
-                </li>
+    <!-- 页面内容 -->
+    <div class="row">
+        <!-- 左侧菜单 -->
+        <div class="col-md-2 sidebar">
+            <h5>Menu</h5>
+            <ul class="nav flex-column">
+                <li class="nav-item"><a class="nav-link" th:href="@{/staff/leaveApplication/history}">My LeaveApplication History</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/staff/compensationLeave/history}">My Compensation Claims</a></li>
+            </ul>
+            <h5 class="mt-4">Leave Balance</h5>
+            <ul class="list-group">
+                <li class="list-group-item bg-dark">Annual Leave Balance: <span th:text="${user.getAnnual_leave_entitlement_last()}">0</span> days</li>
+                <li class="list-group-item bg-dark">Medical Leave Balance: <span th:text="${user.getMedical_leave_entitlement_last()}">0</span> days</li>
+                <li class="list-group-item bg-dark">Compensation Leave Balance: <span th:text="${user.getCompensation_leave_balance_last()}">0</span> days</li>
             </ul>
         </div>
-        <div class="page-size">
-            <span>Results per page:</span>
-            <select id="page-size-selector">
-                <option value="2" th:selected="${leaveApplications.size == 2}">2</option>
-                <option value="10" th:selected="${leaveApplications.size == 10}">10</option>
-                <option value="20" th:selected="${leaveApplications.size == 20}">20</option>
-                <option value="25" th:selected="${leaveApplications.size == 25}">25</option>
-            </select>
-        </div>
+
+        <!-- 右侧内容 -->
+        <div class="col-md-10">
+
+            <nav class="navbar navbar-light bg-light justify-content-between">
+                <span class="navbar-text" style="font-size: 64px;">Welcome,  <span th:text="${user.getUsername()}">username</span> !</span>
+                <a th:href="@{/logout}" class="btn btn-danger">Logout</a>
+            </nav>
+
+            <div class="main-content">
+                <h1 class="centered-title">Your Leave Applications</h1>
+                <a href="/staff/apply-leave" class="btn btn-primary mb-3">Create Leave Application</a>
+
+                <div th:if="${leaveApplications.isEmpty()}">
+                    <h3>You have not submitted any leave applications yet.</h3>
+                </div>
+
+                <div th:if="${!leaveApplications.isEmpty()}">
+                    <table class="table table-striped table-bordered">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th>Leave Type</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Reason</th>
+                            <th>Work Dissemination</th>
+                            <th>Contact Details</th>
+                            <th>Status</th>
+                            <th>Create Time</th>
+                            <th>Update Time</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="leaveApplication : ${leaveApplications}">
+                            <td th:text="${leaveApplication.leaveType.name}"></td>
+                            <td th:text="${leaveApplication.start_date}"></td>
+                            <td th:text="${leaveApplication.end_date}"></td>
+                            <td th:text="${leaveApplication.reason}"></td>
+                            <td th:text="${leaveApplication.work_dissemination}"></td>
+                            <td th:text="${leaveApplication.contact_details}"></td>
+                            <td th:text="${leaveApplication.status}"></td>
+                            <td th:text="${#temporals.format(leaveApplication.created_at, 'yyyy-MM-dd HH:mm')}"></td>
+                            <td th:text="${#temporals.format(leaveApplication.updated_at, 'yyyy-MM-dd HH:mm')}"></td>
+                            <td>
+                                <div th:if="${#strings.equals(leaveApplication.status, 'APPLIED') or #strings.equals(leaveApplication.status,'UPDATED')}">
+                                    <a th:href="@{/staff/leaveApplication/edit/{id}(id=${leaveApplication.id})}" class="btn btn-sm btn-primary">Update</a>
+                                    <a th:href="@{/staff/leaveApplication/delete/{id}(id=${leaveApplication.id})}" class="btn btn-sm btn-danger">Delete</a>
+                                </div>
+                                <div th:if="${#strings.equals(leaveApplication.status, 'APPROVED')}">
+                                    <a th:href="@{/staff/leaveApplication/cancel/{id}(id=${leaveApplication.id})}" class="btn btn-sm btn-warning cancel-btn" th:data-start-date="${leaveApplication.start_date}">Cancel</a>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="pagination-container" style="display: flex; align-items: center; justify-content: center;">
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item" id="prev-page">
+                                    <a class="page-link" href="#">&laquo;</a>
+                                </li>
+                                <li th:each="i : ${#numbers.sequence(0, leaveApplications.totalPages - 1)}" class="page-item" th:classappend="${leaveApplications.number == i} ? 'active'">
+                                    <a class="page-link" href="#" th:data-page="${i}" th:text="${i + 1}">1</a>
+                                </li>
+                                <li class="page-item" id="next-page">
+                                    <a class="page-link" href="#">&raquo;</a>
+                                </li>
+                            </ul>
+                        </nav>
+
+                        <div class="form-inline ml-3">
+                            <label for="page-size-selector" class="mr-2">Results per page:</label>
+                            <select id="page-size-selector" class="form-control" onchange="location = this.value;">
+                                <option value="2" th:selected="${leaveApplications.size == 2}">2</option>
+                                <option value="10" th:selected="${leaveApplications.size == 5}">5</option>
+                                <option value="20" th:selected="${leaveApplications.size == 10}">10</option>
+                                <option value="25" th:selected="${leaveApplications.size == 25}">25</option>
+                            </select>
+                        </div>
+                    </div>
+
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                // 获取当前页面和页面大小
                 let currentPage = [[${leaveApplications.number}]];
                 let pageSize = [[${leaveApplications.size}]];
                 const totalPages = [[${leaveApplications.totalPages}]];
 
-                // 更新URL并重新加载页面
                 function updatePage(page, size) {
                     const url = `/staff/leaveApplication/history?page=${page}&size=${size}`;
                     window.location.href = url;
                 }
 
-                // 处理分页点击事件
                 document.querySelectorAll('.page-link').forEach(function(link) {
                     link.addEventListener('click', function(event) {
                         event.preventDefault();
@@ -117,7 +168,6 @@
                     });
                 });
 
-                // 处理上一页和下一页按钮
                 document.getElementById('prev-page').addEventListener('click', function(event) {
                     event.preventDefault();
                     if (currentPage > 0) {
@@ -132,33 +182,31 @@
                     }
                 });
 
-                // 处理每页显示数量选择器
                 document.getElementById('page-size-selector').addEventListener('change', function(event) {
                     pageSize = event.target.value;
-                    updatePage(0, pageSize); // 将页面索引重置为0
+                    updatePage(0, pageSize);
                 });
             });
         </script>
 
-
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $('.cancel-btn').each(function() {
-            var startDate = $(this).data('start-date');
-            var startDateOnly = new Date(startDate);
-            startDateOnly.setHours(0, 0, 0, 0);
-            var currentDate = new Date();
-            currentDate.setHours(0, 0, 0, 0);
+        <script>
+            $(document).ready(function() {
+                $('.cancel-btn').each(function() {
+                    var startDate = $(this).data('start-date');
+                    var startDateOnly = new Date(startDate);
+                    startDateOnly.setHours(0, 0, 0, 0);
+                    var currentDate = new Date();
+                    currentDate.setHours(0, 0, 0, 0);
 
-            if (currentDate > startDateOnly) {
-                $(this).click(function(event) {
-                    event.preventDefault();
-                    alert('Cannot cancel leave after the start date.');
+                    if (currentDate > startDateOnly) {
+                        $(this).click(function(event) {
+                            event.preventDefault();
+                            alert('Cannot cancel leave after the start date.');
+                        });
+                    }
                 });
-            }
-        });
-    });
-</script>
+            });
+        </script>
 </body>
 </html>
