@@ -10,10 +10,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface CompensationLeaveRepository extends JpaRepository<CompensationLeave, Integer> {
-    @Query("SELECT h FROM CompensationLeave h WHERE h.endDate >= :startDate")
-    List<CompensationLeave> findLeavesEndingAfter(@Param("startDate") LocalDate startDate);
+    @Query("SELECT h FROM CompensationLeave h WHERE h.user.id = :userId AND h.endDate >= :startDate")
+    List<CompensationLeave> findLeavesEndingAfter(@Param("userId") Integer userId, @Param("startDate") LocalDate startDate);
 
-    List<CompensationLeave> findByEndDateAfter(LocalDate startDate);
 
     List<CompensationLeave> findAllByUser(User user);
 }

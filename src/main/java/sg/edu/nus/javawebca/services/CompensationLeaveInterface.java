@@ -1,6 +1,7 @@
 package sg.edu.nus.javawebca.services;
 
 import sg.edu.nus.javawebca.models.CompensationLeave;
+import sg.edu.nus.javawebca.models.User;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,8 +18,10 @@ public interface CompensationLeaveInterface {
 
     void deleteCompensationLeave(CompensationLeave compensationLeave);
 
-    List<CompensationLeave> findLeavesEndingAfter(LocalDate startDate);
+    List<CompensationLeave> findLeavesEndingAfter(Integer userId,LocalDate startDate);
 
-    double calculateCompensationLeave(int Userid);
+    double calculateCompensationLeave(Integer userId);
+
+    List<CompensationLeave> findAllCompensationLeavesByUser(User user);
 
 }

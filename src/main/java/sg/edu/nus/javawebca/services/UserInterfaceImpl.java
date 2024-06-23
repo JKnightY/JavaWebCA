@@ -44,6 +44,13 @@ public class UserInterfaceImpl implements UserInterface {
   public void removeUser(User user) {
     userRepository.delete(user);
   }
+
+  @Transactional
+  @Override
+  public void updateUser(User user) {
+    userRepository.save(user);
+  }
+
   @Transactional
   @Override
   public User authenticate(String account, String pwd) {

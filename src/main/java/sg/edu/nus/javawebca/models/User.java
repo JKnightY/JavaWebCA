@@ -31,8 +31,8 @@ public class User {
     private int annual_leave_entitlement_last;
     private int medical_leave_entitlement;
     private int medical_leave_entitlement_last;
-    private int compensation_leave_balance;
-    private int compensation_leave_balance_last;
+
+    private double compensation_leave_balance_last;
     @OneToMany(mappedBy = "user")
     private List<LeaveApplication> leaveApplications;
 
@@ -61,13 +61,6 @@ public class User {
         this.medical_leave_entitlement_last = medical_leave_entitlement_last;
     }
 
-    public int getCompensation_leave_balance_last() {
-        return compensation_leave_balance_last;
-    }
-
-    public void setCompensation_leave_balance_last(int compensation_leave_balance_last) {
-        this.compensation_leave_balance_last = compensation_leave_balance_last;
-    }
 
     public List<LeaveApplication> getLeaveApplications() {
         return leaveApplications;
@@ -149,13 +142,6 @@ public class User {
         this.medical_leave_entitlement = medical_leave_entitlement;
     }
 
-    public int getCompensation_leave_balance() {
-        return compensation_leave_balance;
-    }
-
-    public void setCompensation_leave_balance(int compensation_leave_balance) {
-        this.compensation_leave_balance = compensation_leave_balance;
-    }
 
     public Integer getHierarchy() {
         return hierarchy;
@@ -171,5 +157,13 @@ public class User {
 
     public void setCompensationLeaves(List<CompensationLeave> compensationLeaves) {
         this.compensationLeaves = compensationLeaves;
+    }
+
+    public double getCompensation_leave_balance_last() {
+        return compensation_leave_balance_last;
+    }
+
+    public void setCompensation_leave_balance_last(double compensation_leave_balance_last) {
+        this.compensation_leave_balance_last = compensation_leave_balance_last;
     }
 }

@@ -51,22 +51,31 @@ public class CompensationLeaveImpl implements CompensationLeaveInterface {
     }
 
     @Override
-    public List<CompensationLeave> findLeavesEndingAfter(LocalDate startDate) {
-        return compensationLeaveRepository.findLeavesEndingAfter(startDate);
+    @Transactional
+    public List<CompensationLeave> findLeavesEndingAfter(Integer userId,LocalDate startDate) {
+        return compensationLeaveRepository.findLeavesEndingAfter(userId,startDate);
+    }
+
+    @Override
+    @Transactional
+    public List<CompensationLeave> findAllCompensationLeavesByUser(User user){
+        return compensationLeaveRepository.findAllByUser(user);
     }
 
 
+    @Override
+    @Transactional
+    public double calculateCompensationLeave(Integer userId) {
 
-    public double calculateCompensationLeave(int userid) {
-        User user = userRepository.findById(userid).get();
-        System.out.println(user);
+        User user = userRepository.findById(userId).get(); // 假设你已经有 userService
+
         List<CompensationLeave> histories = compensationLeaveRepository.findAllByUser(user);
-        System.out.println(histories.size());
+        System.out.println("historiessize:"+histories.size());
 
         double totalHoursWorked = histories.stream().mapToDouble(CompensationLeave::getHours_worked).sum();
-        System.out.println(totalHoursWorked);
+        System.out.println("totalhoursworked"+totalHoursWorked);
         double totalLeaveDays = histories.stream().mapToDouble(CompensationLeave::getLeave_days).sum();
-        System.out.println(totalLeaveDays);
+        System.out.println("totalleavedays"+totalLeaveDays);
         double v = (totalHoursWorked / 4) / 2 - totalLeaveDays;
         return v;
     }
