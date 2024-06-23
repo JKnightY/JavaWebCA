@@ -24,4 +24,5 @@ public class WebAppConfig implements WebMvcConfigurer {
                 .addPathPatterns("/**")
                 .excludePathPatterns("/login", "/logout", "/resources/**", "/static/**", "/error");
     }
+
 }

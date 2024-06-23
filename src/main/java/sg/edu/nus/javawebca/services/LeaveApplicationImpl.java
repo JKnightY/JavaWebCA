@@ -2,16 +2,15 @@ package sg.edu.nus.javawebca.services;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import sg.edu.nus.javawebca.models.LeaveApplication;
-import sg.edu.nus.javawebca.models.LeaveApplicationStatusEnum;
 import sg.edu.nus.javawebca.models.PublicHoliday;
-import sg.edu.nus.javawebca.models.User;
 import sg.edu.nus.javawebca.repositories.LeaveApplicationRepository;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -33,9 +32,15 @@ public class LeaveApplicationImpl implements LeaveApplicationInterface {
 
     @Override
     @Transactional
-    public List<LeaveApplication> findLeaveApplicationsByUserId(int userId){
+    public Page<LeaveApplication> findLeaveApplicationsByUserIdOrderByUpdatedAtDesc(int userId, Pageable pageable) {
+        return leaveApplicationRepository.findLeaveApplicationsByUserIdOrderByUpdatedAtDesc(userId, pageable);
+    }
+
+    @Override
+    public List<LeaveApplication> findLeaveApplicationsByUserId(int userId) {
         return leaveApplicationRepository.findLeaveApplicationsByUserId(userId);
     }
+
 
     @Override
     @Transactional

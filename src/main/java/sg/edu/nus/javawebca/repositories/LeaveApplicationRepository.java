@@ -1,5 +1,7 @@
 package sg.edu.nus.javawebca.repositories;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,6 +17,9 @@ public interface LeaveApplicationRepository extends JpaRepository<LeaveApplicati
 
     @Query("SELECT l FROM LeaveApplication l WHERE l.id = :keyword")
     LeaveApplication findLeaveApplicationsById(@Param("keyword") int keyword);
+
+    @Query("SELECT la FROM LeaveApplication la WHERE la.user.id = :userId ORDER BY la.updated_at DESC")
+    Page<LeaveApplication> findLeaveApplicationsByUserIdOrderByUpdatedAtDesc(@Param("userId") int userId, Pageable pageable);
 
     List<LeaveApplication> findLeaveApplicationsByUserId(int userId);
 }

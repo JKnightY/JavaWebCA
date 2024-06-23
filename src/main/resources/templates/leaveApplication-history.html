@@ -57,24 +57,91 @@
                 <td th:text="${leaveApplication.work_dissemination}"></td>
                 <td th:text="${leaveApplication.contact_details}"></td>
                 <td th:text="${leaveApplication.status}"></td>
-                <td th:text="${leaveApplication.created_at}"></td>
-                <td th:text="${leaveApplication.updated_at}"></td>
+                <td th:text="${#temporals.format(leaveApplication.created_at, 'yyyy-MM-dd HH:mm')}"></td>
+                <td th:text="${#temporals.format(leaveApplication.updated_at, 'yyyy-MM-dd HH:mm')}"></td>
                 <td>
                     <div th:if="${#strings.equals(leaveApplication.status, 'APPLIED')  or #strings.equals(leaveApplication.status,'UPDATED')}">
-                        <a th:href="@{/staff/leaveApplication/edit/}+${leaveApplication.id}">Update</a> |
-                        <a th:href="@{/staff/leaveApplication/delete/}+${leaveApplication.id}">Delete</a>
+                        <a th:href="@{/staff/leaveApplication/edit/{id}(id=${leaveApplication.id})}">Update</a> |
+                        <a th:href="@{/staff/leaveApplication/delete/{id}(id=${leaveApplication.id})}">Delete</a>
                     </div>
                     <div th:if="${#strings.equals(leaveApplication.status, 'APPROVED')}">
-                        <a th:href="@{/staff/leaveApplication/cancel/}+${leaveApplication.id}" class="cancel-btn" th:data-start-date="${leaveApplication.start_date}">Cancel</a>
+                        <a th:href="@{/staff/leaveApplication/cancel/{id}(id=${leaveApplication.id})}" class="cancel-btn" th:data-start-date="${leaveApplication.start_date}">Cancel</a>
                     </div>
                 </td>
             </tr>
             </tbody>
         </table>
-    </div>
-</div>
+        <div class="pagination">
+            <ul class="pagination">
+                <li class="page-item" id="prev-page">
+                    <a class="page-link" href="#">&laquo;</a>
+                </li>
+                <li th:each="i : ${#numbers.sequence(0, leaveApplications.totalPages - 1)}" class="page-item" th:classappend="${leaveApplications.number == i} ? 'active'">
+                    <a class="page-link" href="#" th:data-page="${i}" th:text="${i + 1}">1</a>
+                </li>
+                <li class="page-item" id="next-page">
+                    <a class="page-link" href="#">&raquo;</a>
+                </li>
+            </ul>
+        </div>
+        <div class="page-size">
+            <span>Results per page:</span>
+            <select id="page-size-selector">
+                <option value="2" th:selected="${leaveApplications.size == 2}">2</option>
+                <option value="10" th:selected="${leaveApplications.size == 10}">10</option>
+                <option value="20" th:selected="${leaveApplications.size == 20}">20</option>
+                <option value="25" th:selected="${leaveApplications.size == 25}">25</option>
+            </select>
+        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // 获取当前页面和页面大小
+                let currentPage = [[${leaveApplications.number}]];
+                let pageSize = [[${leaveApplications.size}]];
+                const totalPages = [[${leaveApplications.totalPages}]];
 
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+                // 更新URL并重新加载页面
+                function updatePage(page, size) {
+                    const url = `/staff/leaveApplication/history?page=${page}&size=${size}`;
+                    window.location.href = url;
+                }
+
+                // 处理分页点击事件
+                document.querySelectorAll('.page-link').forEach(function(link) {
+                    link.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        const page = event.target.getAttribute('data-page');
+                        if (page !== null) {
+                            updatePage(page, pageSize);
+                        }
+                    });
+                });
+
+                // 处理上一页和下一页按钮
+                document.getElementById('prev-page').addEventListener('click', function(event) {
+                    event.preventDefault();
+                    if (currentPage > 0) {
+                        updatePage(currentPage - 1, pageSize);
+                    }
+                });
+
+                document.getElementById('next-page').addEventListener('click', function(event) {
+                    event.preventDefault();
+                    if (currentPage < totalPages - 1) {
+                        updatePage(currentPage + 1, pageSize);
+                    }
+                });
+
+                // 处理每页显示数量选择器
+                document.getElementById('page-size-selector').addEventListener('change', function(event) {
+                    pageSize = event.target.value;
+                    updatePage(0, pageSize); // 将页面索引重置为0
+                });
+            });
+        </script>
+
+
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 <script>
     $(document).ready(function() {
         $('.cancel-btn').each(function() {

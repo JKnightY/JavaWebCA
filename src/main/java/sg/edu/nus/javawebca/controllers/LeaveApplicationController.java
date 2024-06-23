@@ -3,6 +3,9 @@ package sg.edu.nus.javawebca.controllers;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -49,18 +52,20 @@ public class LeaveApplicationController {
     }
 
     @RequestMapping("/leaveApplication/history")
-    public String allLeaveApplication(HttpSession session, Model model) {
+    public String allLeaveApplication(HttpSession session, Model model, @RequestParam(defaultValue = "0") int page,
+                                                                    @RequestParam(defaultValue = "2") int size) {
         User user = (User) session.getAttribute("user");
 
         if (user == null) {
             return "redirect:/login"; // 如果没有找到用户，则重定向到登录页面
         }
         model.addAttribute("user", user);
-        List<LeaveApplication> leaveApplications = leaveApplicationService.findLeaveApplicationsByUserId(user.getId());
+        Pageable pageable = PageRequest.of(page, size);
+        Page<LeaveApplication> leaveApplications = leaveApplicationService.findLeaveApplicationsByUserIdOrderByUpdatedAtDesc(user.getId(), pageable);
         model.addAttribute("leaveApplications", leaveApplications);
         List<LeaveType> leaveTypes = leaveTypeService.findAllLeaveTypes();
         model.addAttribute("leaveTypes", leaveTypes);
-        return "/leaveApplication-history";
+        return "leaveApplication-history";
     }
 
     @GetMapping("/apply-leave")
@@ -116,7 +121,7 @@ public class LeaveApplicationController {
         }
         if (inleaveApplication.getLeaveType().getId() == 3) { // Medical leave type ID
 
-            user.setMedical_leave_entitlement_last(user.getAnnual_leave_entitlement_last() - intdays);
+            user.setMedical_leave_entitlement_last(user.getMedical_leave_entitlement_last() - leaveApplicationService.calculateTotalDays(inleaveApplication.getStart_date(), inleaveApplication.getEnd_date()));
 
         }
 
@@ -150,7 +155,7 @@ public class LeaveApplicationController {
         }
         if (leaveApplication.getLeaveType().getId() == 3) { // Medical leave type ID
 
-            user.setMedical_leave_entitlement_last(user.getAnnual_leave_entitlement_last() + intdays);
+            user.setMedical_leave_entitlement_last(user.getMedical_leave_entitlement_last() + intdays);
 
         }
         userService.updateUser(user);
@@ -164,6 +169,9 @@ public class LeaveApplicationController {
             model.addAttribute("leaveTypes", leaveTypes);
             return "/leaveApplication-edit"; // Return to form if there are errors
         }
+        LeaveApplication originalLeaveApplication = leaveApplicationService.findLeaveApplicationById(id);
+        leaveApplication.setCreated_at(originalLeaveApplication.getCreated_at());
+
         User user = (User) session.getAttribute("user");
         leaveApplication.setUser(user);
         Optional<LeaveType> leaveTypeOptional = leaveTypeService.findLeaveTypeById(leaveApplication.getLeaveType().getId());
@@ -189,7 +197,7 @@ public class LeaveApplicationController {
         }
         if (leaveApplication.getLeaveType().getId() == 3) { // Medical leave type ID
 
-            user.setMedical_leave_entitlement_last(user.getMedical_leave_entitlement_last() - intdays);
+            user.setMedical_leave_entitlement_last(user.getMedical_leave_entitlement_last() - leaveApplicationService.calculateTotalDays(leaveApplication.getStart_date(), leaveApplication.getEnd_date()));
 
         }
         leaveApplicationService.updateLeaveApplication(leaveApplication);
